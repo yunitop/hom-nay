@@ -1,0 +1,15 @@
+{
+  "name": "FATEBRIDGE",
+  "short_name": "FATEBRIDGE",
+  "description": "운세 · 사주 · 궁합 | Tử Vi · Tứ Trụ · Hợp Tuổi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0a10",
+  "theme_color": "#0b0a10",
+  "lang": "ko",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

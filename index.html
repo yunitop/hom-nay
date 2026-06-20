@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>FATEBRIDGE · 운세 사주 궁합 | Tử Vi · Tứ Trụ · Hợp Tuổi</title>
+<meta name="description" content="AI 분석 오늘의 운세, 사주, 궁합 · Xem tử vi, tứ trụ, hợp tuổi" />
+<!-- 모바일 웹앱 (홈 화면에 추가) -->
+<meta name="theme-color" content="#0b0a10" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="FATEBRIDGE" />
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icon.svg" />
+<link rel="icon" href="icon.svg" type="image/svg+xml" />
+<style>
+  :root{
+    --bg:#0b0a10;
+    --bg2:#141019;
+    --primary:#ff2e74;        /* 핫핑크 포인트 */
+    --primary-soft:#ff6aa0;
+    --gold:#ffcf5c;           /* 따뜻한 강조색 */
+    --text:#f4f1f8;
+    --muted:#9b93ad;
+    --card:#17131f;
+    --line:rgba(255,255,255,0.08);
+    --shadow:0 10px 30px rgba(0,0,0,0.45);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  body{
+    margin:0;
+    font-family:"Segoe UI","Malgun Gothic",-apple-system,sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(1200px 500px at 50% -10%, rgba(255,46,116,0.18), transparent 60%),
+      linear-gradient(180deg,#100b16,#0b0a10 70%) fixed;
+    min-height:100vh;min-height:100dvh;line-height:1.65;
+    -webkit-tap-highlight-color:transparent;
+    overflow-x:hidden;overscroll-behavior-y:none;
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:0 16px calc(120px + env(safe-area-inset-bottom));}
+
+  /* 상단 바 (브랜드 + 언어) */
+  .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+    padding:16px 2px 12px;background:linear-gradient(180deg,#0d0a12 70%,rgba(13,10,18,0));}
+  .brand{font-size:24px;font-weight:900;letter-spacing:.5px;
+    background:linear-gradient(90deg,var(--primary),var(--primary-soft));
+    -webkit-background-clip:text;background-clip:text;color:transparent;}
+  .lang-bar{display:flex;gap:6px;}
+  .lang-btn{
+    background:rgba(255,255,255,0.05);border:1px solid var(--line);color:var(--muted);
+    padding:6px 12px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:700;transition:all .15s;
+  }
+  .lang-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+  /* 화면 제목 */
+  .screen-head{padding:6px 2px 16px;}
+  h1{margin:0;font-size:24px;letter-spacing:.2px;color:var(--text);}
+  .subtitle{margin:4px 0 0;color:var(--muted);font-size:13px;}
+
+  /* 카드 */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:20px;margin-bottom:14px;box-shadow:var(--shadow);}
+  label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px;font-weight:600;}
+  select,input{width:100%;padding:13px 14px;border-radius:13px;border:1px solid var(--line);
+    background:rgba(255,255,255,0.04);color:var(--text);font-size:16px;}
+  select{appearance:none;}
+  input::placeholder{color:#6c6480;}
+  .row{display:flex;gap:10px;}
+  .row>div{flex:1;}
+  .mt{margin-top:14px;}
+  .person-title{font-weight:700;color:var(--primary-soft);margin:0 0 10px;font-size:15px;}
+  .btn-main{width:100%;margin-top:18px;padding:16px;border:none;border-radius:14px;
+    background:linear-gradient(90deg,var(--primary),var(--primary-soft));
+    color:#fff;font-size:17px;font-weight:800;cursor:pointer;transition:transform .1s;
+    box-shadow:0 8px 24px rgba(255,46,116,0.35);}
+  .btn-main:active{transform:scale(.985);}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  /* 결과 공통 */
+  .result{display:none;}
+  .result-head{text-align:center;margin-bottom:16px;}
+  .big-emoji{font-size:52px;}
+  .res-name{font-size:21px;font-weight:800;color:var(--primary-soft);margin-top:2px;}
+  .res-sub{color:var(--muted);font-size:13px;margin-top:2px;}
+
+  .block{margin-bottom:14px;padding-bottom:14px;border-bottom:1px dashed var(--line);}
+  .block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .block-title{font-weight:700;color:var(--gold);font-size:14px;margin-bottom:4px;display:flex;gap:6px;align-items:center;}
+  .block-text{font-size:15px;color:#e7e3f0;}
+
+  /* 사주 표 */
+  .pillars{display:flex;gap:8px;text-align:center;margin:6px 0 4px;}
+  .pillar{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:14px;padding:11px 4px;}
+  .pillar .plabel{font-size:11px;color:var(--muted);}
+  .pillar .pval{font-size:18px;font-weight:800;color:var(--text);margin-top:3px;}
+  .pillar .pelem{font-size:11px;color:var(--gold);margin-top:2px;}
+
+  /* 궁합 점수 */
+  .score-wrap{text-align:center;margin-bottom:12px;}
+  .score{font-size:48px;font-weight:900;color:var(--primary-soft);}
+  .score small{font-size:18px;color:var(--muted);}
+  .bar{height:12px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;margin:8px 0;}
+  .bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--primary));border-radius:999px;transition:width .6s ease;}
+
+  .lucky{display:flex;gap:10px;margin-top:8px;}
+  .lucky .pill{flex:1;text-align:center;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:14px;padding:12px 6px;}
+  .pill .k{font-size:11px;color:var(--muted);display:block;}
+  .pill .v{font-size:17px;font-weight:800;color:var(--primary-soft);}
+
+  .ai-tag{display:inline-block;background:rgba(255,46,116,0.14);color:var(--primary-soft);font-size:11px;font-weight:700;
+    padding:4px 11px;border-radius:999px;margin-bottom:10px;}
+
+  /* 양력/음력 토글 */
+  .cal-toggle{display:inline-flex;background:rgba(255,255,255,0.05);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px;}
+  .cal-toggle .cal{border:none;background:transparent;padding:8px 18px;border-radius:9px;
+    font-weight:700;color:var(--muted);cursor:pointer;font-size:14px;transition:all .15s;}
+  .cal-toggle .cal.active{background:var(--primary);color:#fff;}
+  .leap-row{display:none;align-items:center;gap:7px;margin-top:10px;font-size:13px;color:var(--muted);}
+  .leap-row.show{display:flex;}
+  .leap-row input{width:auto;margin:0;accent-color:var(--primary);}
+
+  /* 결과 등장 애니메이션 */
+  @keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+  .result.show{animation:rise .35s ease both;}
+
+  /* 오행 분포 */
+  .balance{margin:4px 0 2px;}
+  .balance .brow{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:12px;}
+  .balance .bname{width:84px;color:var(--muted);}
+  .balance .btrack{flex:1;height:9px;background:rgba(255,255,255,0.07);border-radius:999px;overflow:hidden;}
+  .balance .bfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--primary));border-radius:999px;}
+  .balance .bnum{width:18px;text-align:right;color:var(--primary-soft);font-weight:700;}
+
+  footer{text-align:center;color:var(--muted);font-size:12px;margin:24px 0 0;}
+
+  /* 회사 정보 (푸터) */
+  .site-info{margin-top:18px;padding-top:20px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:13px;line-height:1.95;}
+  .site-info p{margin:0;}
+  .site-info a{color:var(--primary-soft);text-decoration:none;}
+  .site-info .policy{margin-top:14px;}
+  .site-info .policy a{color:#cfc8dd;}
+  .site-info .copyright{margin-top:14px;color:#6c6480;font-size:12px;letter-spacing:.2px;}
+
+  /* 하단 플로팅 네비게이션 (앱 스타일) */
+  .bottomnav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;
+    display:flex;gap:4px;padding:7px;border-radius:999px;
+    background:rgba(28,22,38,0.82);backdrop-filter:blur(14px);
+    border:1px solid var(--line);box-shadow:0 12px 36px rgba(0,0,0,0.5);
+    width:calc(100% - 32px);max-width:420px;}
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+    border:none;background:transparent;color:var(--muted);cursor:pointer;
+    padding:9px 4px;border-radius:999px;font-size:11px;font-weight:700;transition:all .15s;}
+  .nav-item .ni-ic{font-size:19px;line-height:1;}
+  .nav-item.active{background:linear-gradient(90deg,var(--primary),var(--primary-soft));color:#fff;
+    box-shadow:0 6px 18px rgba(255,46,116,0.4);}
+
+  /* 작은 화면 미세 조정 */
+  @media (max-width:380px){
+    .pillar .pval{font-size:15px;}
+    h1{font-size:21px;}
+    .nav-item .ni-tx{font-size:10px;}
+    .brand{font-size:19px;}
+    .lang-btn{padding:6px 10px;font-size:11px;}
+  }
+
+  /* ===== 상단 고정(브랜드+카테고리) ===== */
+  .topwrap{position:sticky;top:0;z-index:40;background:#0c0a11;}
+  .appbar{display:flex;align-items:center;justify-content:space-between;
+    padding:calc(14px + env(safe-area-inset-top)) 16px 8px;}
+  .appbar .brand{font-size:23px;font-weight:900;letter-spacing:.5px;
+    background:linear-gradient(90deg,#ff2e74,#ff6aa0);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .appbar-right{display:flex;align-items:center;gap:8px;}
+
+  .cats{display:flex;gap:16px;overflow-x:auto;padding:4px 16px 12px;scrollbar-width:none;}
+  .cats::-webkit-scrollbar{display:none;}
+  .cats.hidden{display:none;}
+  .cat{flex:0 0 auto;background:none;border:none;color:var(--muted);font-size:16px;font-weight:700;
+    cursor:pointer;padding:6px 2px;white-space:nowrap;position:relative;}
+  .cat.active{color:var(--text);}
+  .cat.active::after{content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:-3px;
+    width:80%;height:3px;border-radius:3px;background:var(--primary);}
+  .cat[data-cat="all"]{background:rgba(255,255,255,0.08);border-radius:999px;padding:7px 15px;color:var(--text);}
+  .cat[data-cat="all"].active{background:rgba(255,255,255,0.16);}
+  .cat[data-cat="all"].active::after{display:none;}
+
+  /* ===== 피드 ===== */
+  .feed{max-width:560px;margin:0 auto;padding:6px 16px calc(120px + env(safe-area-inset-bottom));}
+  .feed.hidden{display:none;}
+
+  /* 히어로 캐러셀 */
+  .hero{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+    margin:4px -16px 6px;padding:6px 16px;scrollbar-width:none;}
+  .hero::-webkit-scrollbar{display:none;}
+  .hcard{scroll-snap-align:center;flex:0 0 86%;aspect-ratio:3/4;border-radius:22px;position:relative;
+    overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;cursor:pointer;
+    border:1px solid var(--line);}
+  .hcard .badge{position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.45);color:#fff;
+    font-size:12px;font-weight:700;padding:4px 11px;border-radius:999px;}
+  .hcard .motif,.pcard .motif{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .hcard .motif{font-size:104px;opacity:.92;filter:drop-shadow(0 6px 18px rgba(0,0,0,.4));}
+  .hcard h3{position:relative;margin:0;font-size:27px;font-weight:900;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.65);}
+  .hcard p{position:relative;margin:6px 0 0;font-size:14px;color:rgba(255,255,255,.9);text-shadow:0 1px 8px rgba(0,0,0,.6);}
+
+  /* 주제 섹션 */
+  .row-sec{margin:24px 0 0;}
+  .sec-kicker{margin:0;color:var(--muted);font-size:13px;font-weight:600;}
+  .sec-title{margin:3px 0 12px;font-size:20px;font-weight:800;color:var(--text);}
+  .hscroll{display:flex;gap:12px;overflow-x:auto;margin:0 -16px;padding:0 16px 4px;scrollbar-width:none;}
+  .hscroll::-webkit-scrollbar{display:none;}
+
+  /* 상품 카드 */
+  .pcard{flex:0 0 70%;max-width:230px;aspect-ratio:3/4;border-radius:18px;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:flex-end;padding:16px;cursor:pointer;border:1px solid var(--line);}
+  .pcard .motif{font-size:76px;opacity:.92;filter:drop-shadow(0 6px 14px rgba(0,0,0,.4));}
+  .pcard h4{position:relative;margin:0;font-size:18px;font-weight:800;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.65);}
+  .pcard span{position:relative;margin-top:4px;font-size:12.5px;color:rgba(255,255,255,.86);text-shadow:0 1px 8px rgba(0,0,0,.6);}
+
+  /* 그라데이션 테마 */
+  .g-love{background:linear-gradient(160deg,#ff5e9c,#7a3bd1);}
+  .g-wealth{background:linear-gradient(160deg,#caa24a,#6b4b1e);}
+  .g-reunion{background:linear-gradient(160deg,#5b6cff,#2a1b5e);}
+  .g-fortune{background:linear-gradient(160deg,#3a4ed6,#161038);}
+  .g-adult{background:linear-gradient(160deg,#b3315a,#3a1020);}
+  .g-saju{background:linear-gradient(160deg,#1f9e8e,#123a4d);}
+
+  /* 실제 그림 카드: assets/img/ 에 이미지를 넣고 카드에 has-img 추가 + style 배경 지정 */
+  .pcard.has-img,.hcard.has-img{background-size:cover;background-position:center;}
+  .pcard.has-img .motif,.hcard.has-img .motif{display:none;}
+  .pcard.has-img::after,.hcard.has-img::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.62));}
+  .pcard.has-img>*,.hcard.has-img>*{position:relative;z-index:2;}
+
+  /* 추천(번호) 리스트 */
+  .rank-sec{margin-top:26px;}
+  .rank-item{display:flex;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer;}
+  .rank-item .no{font-size:17px;font-weight:800;color:var(--muted);width:14px;text-align:center;}
+  .rank-item .thumb{width:58px;height:58px;border-radius:16px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:28px;}
+  .rank-item .rt{flex:1;}
+  .rank-item .rt h4{margin:0;font-size:16px;font-weight:800;}
+  .rank-item .rt p{margin:2px 0 0;font-size:13px;color:var(--muted);}
+  .rank-item .arr{color:var(--muted);font-size:18px;}
+
+  /* 리뷰 */
+  .reviews{margin-top:28px;}
+  .rev{padding:15px 0;border-bottom:1px solid var(--line);}
+  .rev-top{display:flex;align-items:center;gap:10px;}
+  .rev-av{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.06);
+    display:flex;align-items:center;justify-content:center;font-size:21px;flex:0 0 auto;}
+  .rev-name{font-weight:700;font-size:14px;}
+  .rev-id{color:var(--muted);font-size:12px;margin-left:6px;}
+  .rev-stars{color:#ffcf5c;font-size:13px;margin-top:1px;}
+  .rev-text{margin:9px 0 0;font-size:14px;color:#e7e3f0;}
+  .rev-note{color:#6c6480;font-size:12px;margin:8px 0 0;}
+
+  /* 계산기 오버레이 */
+  .tool-overlay{display:none;}
+  .tool-overlay.active{display:block;}
+  .tool-top{display:flex;align-items:center;gap:12px;padding:14px 2px 6px;}
+  .tool-top button{background:none;border:none;color:var(--text);font-size:24px;cursor:pointer;line-height:1;}
+  .tool-top .tt-title{font-size:16px;font-weight:800;color:var(--muted);letter-spacing:.5px;}
+</style>
+</head>
+<body>
+
+<!-- ===== 상단 고정: 브랜드 + 카테고리 ===== -->
+<div class="topwrap">
+  <header class="appbar">
+    <div class="brand">FATEBRIDGE</div>
+    <div class="appbar-right">
+      <div class="lang-bar">
+        <button class="lang-btn active" data-lang="ko" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn" data-lang="vi" onclick="setLang('vi')">Tiếng Việt</button>
+      </div>
+    </div>
+  </header>
+  <nav class="cats" id="cats">
+    <button class="cat active" data-cat="all"     onclick="filterCat(this)" data-t="catAll">전체</button>
+    <button class="cat"        data-cat="adult"   onclick="filterCat(this)" data-t="catAdult">성인</button>
+    <button class="cat"        data-cat="love"    onclick="filterCat(this)" data-t="catLove">연애</button>
+    <button class="cat"        data-cat="reunion" onclick="filterCat(this)" data-t="catReunion">재회</button>
+    <button class="cat"        data-cat="wealth"  onclick="filterCat(this)" data-t="catWealth">재물</button>
+    <button class="cat"        data-cat="match"   onclick="filterCat(this)" data-t="catMatch">궁합</button>
+  </nav>
+</div>
+
+<!-- ============ 홈 피드 ============ -->
+<main class="feed" id="feed">
+
+  <!-- 히어로 (우리 핵심 기능) -->
+  <section class="hero">
+    <div class="hcard g-fortune" onclick="openTool('today')">
+      <span class="badge">TODAY</span><div class="motif">🌙</div>
+      <h3 data-t="heroTodayT">오늘의 운세</h3><p data-t="heroTodayD">생년월일로 보는 오늘 하루</p>
+    </div>
+    <div class="hcard g-saju" onclick="openTool('saju')">
+      <div class="motif">📜</div>
+      <h3 data-t="heroSajuT">정통 사주팔자</h3><p data-t="heroSajuD">타고난 나의 운명과 오행</p>
+    </div>
+    <div class="hcard g-love" onclick="openTool('match')">
+      <div class="motif">💞</div>
+      <h3 data-t="heroMatchT">운명의 궁합</h3><p data-t="heroMatchD">두 사람의 인연 점수</p>
+    </div>
+  </section>
+
+  <!-- 연애·썸 -->
+  <section class="row-sec">
+    <p class="sec-kicker" data-t="secLoveK">연애 · 썸 분야</p>
+    <h2 class="sec-title" data-t="secLoveT">설레는 연애운이 궁금하다면?</h2>
+    <div class="hscroll">
+      <div class="pcard g-love" data-cat="love" onclick="comingSoon()"><div class="motif">💘</div><h4 data-t="cLove1T">2026 연애운 사주</h4><span data-t="cLove1D">올해 찾아올 인연은?</span></div>
+      <div class="pcard g-love" data-cat="love" onclick="comingSoon()"><div class="motif">💑</div><h4 data-t="cLove2T">솔로 탈출 사주</h4><span data-t="cLove2D">언제쯤 연애하게 될까?</span></div>
+      <div class="pcard g-love" data-cat="love" onclick="comingSoon()"><div class="motif">🌸</div><h4 data-t="cLove3T">썸 성공 사주</h4><span data-t="cLove3D">그 사람의 속마음은?</span></div>
+    </div>
+  </section>
+
+  <!-- 결혼·가정 -->
+  <section class="row-sec">
+    <p class="sec-kicker" data-t="secMarryK">결혼 · 가정 분야</p>
+    <h2 class="sec-title" data-t="secMarryT">언젠가 할 결혼, 언제쯤?</h2>
+    <div class="hscroll">
+      <div class="pcard g-love" data-cat="love" onclick="comingSoon()"><div class="motif">💍</div><h4 data-t="cMarry1T">결혼 시기 사주</h4><span data-t="cMarry1D">나의 결혼운 흐름</span></div>
+      <div class="pcard g-love" data-cat="love" onclick="comingSoon()"><div class="motif">👶</div><h4 data-t="cMarry2T">임신·자녀운 사주</h4><span data-t="cMarry2D">우리 아이의 기운</span></div>
+    </div>
+  </section>
+
+  <!-- 재회 -->
+  <section class="row-sec">
+    <p class="sec-kicker" data-t="secReunK">재회 분야</p>
+    <h2 class="sec-title" data-t="secReunT">잊을 수 없는 사람이 있다면…?</h2>
+    <div class="hscroll">
+      <div class="pcard g-reunion" data-cat="reunion" onclick="comingSoon()"><div class="motif">🌌</div><h4 data-t="cReun1T">재회 가능성 사주</h4><span data-t="cReun1D">우리 다시 만날 운명일까?</span></div>
+      <div class="pcard g-reunion" data-cat="reunion" onclick="comingSoon()"><div class="motif">🕯️</div><h4 data-t="cReun2T">인연 다시보기</h4><span data-t="cReun2D">그 사람과의 인연 분석</span></div>
+    </div>
+  </section>
+
+  <!-- 재물·직업 -->
+  <section class="row-sec">
+    <p class="sec-kicker" data-t="secWealthK">자기개발 · 재물 분야</p>
+    <h2 class="sec-title" data-t="secWealthT">나 뭐 해먹고 살지…?</h2>
+    <div class="hscroll">
+      <div class="pcard g-wealth" data-cat="wealth" onclick="comingSoon()"><div class="motif">🔑</div><h4 data-t="cWealth1T">재물운 사주</h4><span data-t="cWealth1D">5년 내로 부자될 수 있을까?</span></div>
+      <div class="pcard g-wealth" data-cat="wealth" onclick="comingSoon()"><div class="motif">👑</div><h4 data-t="cWealth2T">직업·적성 사주</h4><span data-t="cWealth2D">나에게 맞는 직업은?</span></div>
+    </div>
+  </section>
+
+  <!-- 궁합 -->
+  <section class="row-sec">
+    <p class="sec-kicker" data-t="secMatchK">궁합 분야</p>
+    <h2 class="sec-title" data-t="secMatchT">우리, 잘 맞을까?</h2>
+    <div class="hscroll">
+      <div class="pcard g-love" data-cat="match" onclick="openTool('match')"><div class="motif">💞</div><h4 data-t="cMatch1T">연인 궁합</h4><span data-t="cMatch1D">두 사람의 인연 점수</span></div>
+      <div class="pcard g-reunion" data-cat="match" onclick="comingSoon()"><div class="motif">👫</div><h4 data-t="cMatch2T">친구·가족 궁합</h4><span data-t="cMatch2D">관계 케미 분석</span></div>
+    </div>
+  </section>
+
+  <!-- 성인(수위 낮게) -->
+  <section class="row-sec">
+    <p class="sec-kicker" data-t="secAdultK">성인 · 19+ 분야</p>
+    <h2 class="sec-title" data-t="secAdultT">은밀한 나의 매력은?</h2>
+    <div class="hscroll">
+      <div class="pcard g-adult" data-cat="adult" onclick="comingSoon()"><div class="motif">🔥</div><h4 data-t="cAdult1T">이성 매력 분석</h4><span data-t="cAdult1D">나의 끌림 포인트</span></div>
+      <div class="pcard g-adult" data-cat="adult" onclick="comingSoon()"><div class="motif">💋</div><h4 data-t="cAdult2T">속궁합 케미</h4><span data-t="cAdult2D">둘 사이의 은근한 케미</span></div>
+    </div>
+  </section>
+
+  <!-- 추천 리스트 -->
+  <section class="rank-sec">
+    <h2 class="sec-title" data-t="rankT">추천 사주 ✨</h2>
+    <div class="rank-item" onclick="openTool('saju')">
+      <span class="no">1</span><div class="thumb g-saju">🔮</div>
+      <div class="rt"><h4 data-t="rank1T">신이 나를 빚을 때</h4><p data-t="rank1D">사주로 보는 나의 본성</p></div><span class="arr">›</span>
+    </div>
+    <div class="rank-item" onclick="openTool('match')">
+      <span class="no">2</span><div class="thumb g-love">⚖️</div>
+      <div class="rt"><h4 data-t="rank2T">오행 궁합 분석</h4><p data-t="rank2D">우리는 잘 맞는 사이일까?</p></div><span class="arr">›</span>
+    </div>
+    <div class="rank-item" onclick="openTool('today')">
+      <span class="no">3</span><div class="thumb g-fortune">🌙</div>
+      <div class="rt"><h4 data-t="rank3T">오늘의 운세</h4><p data-t="rank3D">생년월일로 보는 하루 운세</p></div><span class="arr">›</span>
+    </div>
+  </section>
+
+  <!-- 리뷰 -->
+  <section class="reviews">
+    <h2 class="sec-title" data-t="revT">따끈따끈 고객 후기 🔥</h2>
+    <div class="rev">
+      <div class="rev-top"><div class="rev-av">🐑</div>
+        <div><span class="rev-name" data-t="revName1">을미일주</span><span class="rev-id">db*****</span><div class="rev-stars">★★★★★</div></div></div>
+      <p class="rev-text" data-t="revText1">생각보다 잘 맞아서 신기했어요. 설명도 자세하고 좋네요!</p>
+    </div>
+    <div class="rev">
+      <div class="rev-top"><div class="rev-av">🐲</div>
+        <div><span class="rev-name" data-t="revName2">갑진일주</span><span class="rev-id">eu*****</span><div class="rev-stars">★★★★★</div></div></div>
+      <p class="rev-text" data-t="revText2">오행 분포 막대가 이해하기 쉬웠어요. 재밌게 봤습니다 ㅎㅎ</p>
+    </div>
+    <div class="rev">
+      <div class="rev-top"><div class="rev-av">🐯</div>
+        <div><span class="rev-name" data-t="revName3">병인일주</span><span class="rev-id">kh*****</span><div class="rev-stars">★★★★☆</div></div></div>
+      <p class="rev-text" data-t="revText3">한국어·베트남어 둘 다 되는 게 좋아요. 친구한테도 공유했어요!</p>
+    </div>
+    <p class="rev-note" data-t="revNote">* 예시 후기입니다. 정식 오픈 후 실제 고객 후기로 교체됩니다.</p>
+  </section>
+
+  <!-- 회사 정보 -->
+  <section class="site-info">
+    <p>대표이사: 송홍기 | 사업자등록번호 414-05-23847</p>
+    <p>통신판매업 신고번호 2025-서울광진-0894</p>
+    <p>주소: 서울특별시 서초구 사임당로8길 13, 4층</p>
+    <p>상호명 : 사이버네틱스</p>
+    <p>고객센터 : <a href="#" id="link-cs">채널톡</a></p>
+    <p>TEL : 070-4138-2293</p>
+    <p class="policy"><a href="#" id="link-terms">이용약관</a> &nbsp;|&nbsp; <a href="#" id="link-privacy">개인정보처리방침</a></p>
+    <p class="copyright">Copyright @ 2024 CYBERNETICS - All rights reserved</p>
+  </section>
+</main>
+
+<!-- ============ 계산기 (오버레이) ============ -->
+<div class="wrap tool-overlay" id="tool">
+  <div class="tool-top">
+    <button onclick="closeTool()" aria-label="back">←</button>
+    <span class="tt-title">FATEBRIDGE</span>
+  </div>
+
+  <!-- 현재 화면 제목 (탭에 따라 자동 변경) -->
+  <div class="screen-head">
+    <h1 id="screen-title">오늘의 운세</h1>
+    <p class="subtitle" id="screen-sub">생년월일로 보는 오늘 하루</p>
+  </div>
+
+  <!-- ============ 오늘의 운세 ============ -->
+  <div class="panel active" id="panel-today">
+    <div class="card">
+      <label data-t="birthLabel">생년월일을 입력하세요</label>
+      <div class="cal-toggle">
+        <button class="cal active" data-cal="solar" onclick="setCal('t',this)" data-t="solar">양력</button>
+        <button class="cal" data-cal="lunar" onclick="setCal('t',this)" data-t="lunar">음력</button>
+      </div>
+      <div class="row mt">
+        <div><input type="number" id="t-y" placeholder="1990" /></div>
+        <div><input type="number" id="t-m" placeholder="5" min="1" max="12" /></div>
+        <div><input type="number" id="t-d" placeholder="15" min="1" max="31" /></div>
+      </div>
+      <label class="leap-row" id="t-leap-row"><input type="checkbox" id="t-leap" /> <span data-t="leapLabel">윤달(閏月)</span></label>
+      <button class="btn-main" data-t="btnToday" onclick="runToday()">오늘의 운세 보기</button>
+    </div>
+    <div class="card result" id="t-result">
+      <div class="result-head">
+        <div class="big-emoji" id="t-emoji">🐯</div>
+        <div class="res-name" id="t-name"></div>
+        <div class="res-sub" id="t-date"></div>
+      </div>
+      <div class="block"><div class="block-title">✨ <span data-t="fOverall">총운</span></div><div class="block-text" id="t-overall"></div></div>
+      <div class="block"><div class="block-title">💗 <span data-t="fLove">애정운</span></div><div class="block-text" id="t-love"></div></div>
+      <div class="block"><div class="block-title">💰 <span data-t="fMoney">금전운</span></div><div class="block-text" id="t-money"></div></div>
+      <div class="block"><div class="block-title">🍀 <span data-t="fHealth">건강운</span></div><div class="block-text" id="t-health"></div></div>
+      <div class="lucky">
+        <div class="pill"><span class="k" data-t="luckyNum">행운의 숫자</span><span class="v" id="t-num"></span></div>
+        <div class="pill"><span class="k" data-t="luckyColor">행운의 색</span><span class="v" id="t-color"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 사주 ============ -->
+  <div class="panel" id="panel-saju">
+    <div class="card">
+      <label data-t="birthLabel">생년월일을 입력하세요</label>
+      <div class="cal-toggle">
+        <button class="cal active" data-cal="solar" onclick="setCal('s',this)" data-t="solar">양력</button>
+        <button class="cal" data-cal="lunar" onclick="setCal('s',this)" data-t="lunar">음력</button>
+      </div>
+      <div class="row mt">
+        <div><input type="number" id="s-y" placeholder="1990" /></div>
+        <div><input type="number" id="s-m" placeholder="5" min="1" max="12" /></div>
+        <div><input type="number" id="s-d" placeholder="15" min="1" max="31" /></div>
+      </div>
+      <label class="leap-row" id="s-leap-row"><input type="checkbox" id="s-leap" /> <span data-t="leapLabel">윤달(閏月)</span></label>
+      <div class="mt">
+        <label data-t="hourLabel">태어난 시간 (모르면 비워두세요)</label>
+        <select id="s-h">
+          <option value="-1" data-t="unknownHour">모름</option>
+          <option value="0">23:00 ~ 00:59 (자시)</option>
+          <option value="1">01:00 ~ 02:59 (축시)</option>
+          <option value="2">03:00 ~ 04:59 (인시)</option>
+          <option value="3">05:00 ~ 06:59 (묘시)</option>
+          <option value="4">07:00 ~ 08:59 (진시)</option>
+          <option value="5">09:00 ~ 10:59 (사시)</option>
+          <option value="6">11:00 ~ 12:59 (오시)</option>
+          <option value="7">13:00 ~ 14:59 (미시)</option>
+          <option value="8">15:00 ~ 16:59 (신시)</option>
+          <option value="9">17:00 ~ 18:59 (유시)</option>
+          <option value="10">19:00 ~ 20:59 (술시)</option>
+          <option value="11">21:00 ~ 22:59 (해시)</option>
+        </select>
+      </div>
+      <button class="btn-main" data-t="btnSaju" onclick="runSaju()">사주 분석하기</button>
+    </div>
+    <div class="card result" id="s-result">
+      <span class="ai-tag">🔮 <span data-t="aiTag">정통 명리 분석</span></span>
+      <div class="result-head">
+        <div class="big-emoji" id="s-emoji">📜</div>
+        <div class="res-name" id="s-zodiac"></div>
+        <div class="res-sub" id="s-elem"></div>
+      </div>
+      <div class="pillars" id="s-pillars"></div>
+      <div class="balance" id="s-balance"></div>
+      <div class="block mt"><div class="block-title">🧭 <span data-t="sPersona">타고난 성향</span></div><div class="block-text" id="s-persona"></div></div>
+      <div class="block"><div class="block-title">💼 <span data-t="sWork">일·재물운</span></div><div class="block-text" id="s-work"></div></div>
+      <div class="block"><div class="block-title">💗 <span data-t="sLove">애정·인연운</span></div><div class="block-text" id="s-love"></div></div>
+      <div class="block"><div class="block-title">🌿 <span data-t="sAdvice">조언</span></div><div class="block-text" id="s-advice"></div></div>
+    </div>
+  </div>
+
+  <!-- ============ 궁합 ============ -->
+  <div class="panel" id="panel-match">
+    <div class="card">
+      <p class="person-title" data-t="personA">첫 번째 사람</p>
+      <div class="row">
+        <div><input type="number" id="m-y1" placeholder="1990" /></div>
+        <div><input type="number" id="m-m1" placeholder="5" min="1" max="12" /></div>
+        <div><input type="number" id="m-d1" placeholder="15" min="1" max="31" /></div>
+      </div>
+      <p class="person-title mt" data-t="personB">두 번째 사람</p>
+      <div class="row">
+        <div><input type="number" id="m-y2" placeholder="1992" /></div>
+        <div><input type="number" id="m-m2" placeholder="8" min="1" max="12" /></div>
+        <div><input type="number" id="m-d2" placeholder="20" min="1" max="31" /></div>
+      </div>
+      <button class="btn-main" data-t="btnMatch" onclick="runMatch()">궁합 보기</button>
+    </div>
+    <div class="card result" id="m-result">
+      <span class="ai-tag">🔮 <span data-t="aiTag">정통 명리 분석</span></span>
+      <div class="result-head">
+        <div class="big-emoji" id="m-emoji">💞</div>
+        <div class="res-name" id="m-pair"></div>
+      </div>
+      <div class="score-wrap">
+        <div class="score"><span id="m-score">0</span><small>/100</small></div>
+        <div class="bar"><span id="m-bar" style="width:0%"></span></div>
+        <div class="res-name" id="m-grade" style="font-size:17px;"></div>
+      </div>
+      <div class="block mt"><div class="block-title">🔗 <span data-t="mRelation">두 사람의 기운</span></div><div class="block-text" id="m-relation"></div></div>
+      <div class="block"><div class="block-title">💗 <span data-t="mLove">연애·결혼운</span></div><div class="block-text" id="m-love"></div></div>
+      <div class="block"><div class="block-title">🌿 <span data-t="mAdvice">관계 조언</span></div><div class="block-text" id="m-advice"></div></div>
+    </div>
+  </div>
+
+  <footer data-t="footer">※ 본 풀이는 재미와 참고용입니다.</footer>
+</div>
+
+<!-- 하단 플로팅 네비게이션 -->
+<nav class="bottomnav">
+  <button class="nav-item active" data-nav="home" onclick="closeTool()">
+    <span class="ni-ic">🏠</span><span class="ni-tx" data-t="navHome">홈</span></button>
+  <button class="nav-item" data-nav="today" onclick="openTool('today')">
+    <span class="ni-ic">🌙</span><span class="ni-tx" data-t="navToday">운세</span></button>
+  <button class="nav-item" data-nav="saju" onclick="openTool('saju')">
+    <span class="ni-ic">📜</span><span class="ni-tx" data-t="tabSaju">사주</span></button>
+  <button class="nav-item" data-nav="match" onclick="openTool('match')">
+    <span class="ni-ic">💞</span><span class="ni-tx" data-t="tabMatch">궁합</span></button>
+</nav>
+
+<script>
+/* ============================================================
+   UI 텍스트
+   ============================================================ */
+const UI = {
+  ko:{
+    title:"운세 · 사주 · 궁합", subtitle:"생년월일로 보는 AI 분석 풀이",
+    tabToday:"오늘의 운세", tabSaju:"사주", tabMatch:"궁합",
+    subToday:"생년월일로 보는 오늘 하루", subSaju:"사주팔자와 오행 분석", subMatch:"두 사람의 띠 궁합",
+    catAll:"전체", catAdult:"성인", catLove:"연애", catReunion:"재회", catWealth:"재물", catMatch:"궁합",
+    navHome:"홈", navToday:"운세", comingSoon:"준비 중인 콘텐츠예요. 곧 만나보실 수 있어요!",
+    heroTodayT:"오늘의 운세", heroTodayD:"생년월일로 보는 오늘 하루",
+    heroSajuT:"정통 사주팔자", heroSajuD:"타고난 나의 운명과 오행",
+    heroMatchT:"운명의 궁합", heroMatchD:"두 사람의 인연 점수",
+    secLoveK:"연애 · 썸 분야", secLoveT:"설레는 연애운이 궁금하다면?",
+    cLove1T:"2026 연애운 사주", cLove1D:"올해 찾아올 인연은?",
+    cLove2T:"솔로 탈출 사주", cLove2D:"언제쯤 연애하게 될까?",
+    cLove3T:"썸 성공 사주", cLove3D:"그 사람의 속마음은?",
+    secMarryK:"결혼 · 가정 분야", secMarryT:"언젠가 할 결혼, 언제쯤?",
+    cMarry1T:"결혼 시기 사주", cMarry1D:"나의 결혼운 흐름",
+    cMarry2T:"임신·자녀운 사주", cMarry2D:"우리 아이의 기운",
+    secReunK:"재회 분야", secReunT:"잊을 수 없는 사람이 있다면…?",
+    cReun1T:"재회 가능성 사주", cReun1D:"우리 다시 만날 운명일까?",
+    cReun2T:"인연 다시보기", cReun2D:"그 사람과의 인연 분석",
+    secWealthK:"자기개발 · 재물 분야", secWealthT:"나 뭐 해먹고 살지…?",
+    cWealth1T:"재물운 사주", cWealth1D:"5년 내로 부자될 수 있을까?",
+    cWealth2T:"직업·적성 사주", cWealth2D:"나에게 맞는 직업은?",
+    secMatchK:"궁합 분야", secMatchT:"우리, 잘 맞을까?",
+    cMatch1T:"연인 궁합", cMatch1D:"두 사람의 인연 점수",
+    cMatch2T:"친구·가족 궁합", cMatch2D:"관계 케미 분석",
+    secAdultK:"성인 · 19+ 분야", secAdultT:"은밀한 나의 매력은?",
+    cAdult1T:"이성 매력 분석", cAdult1D:"나의 끌림 포인트",
+    cAdult2T:"속궁합 케미", cAdult2D:"둘 사이의 은근한 케미",
+    rankT:"추천 사주 ✨",
+    rank1T:"신이 나를 빚을 때", rank1D:"사주로 보는 나의 본성",
+    rank2T:"오행 궁합 분석", rank2D:"우리는 잘 맞는 사이일까?",
+    rank3T:"오늘의 운세", rank3D:"생년월일로 보는 하루 운세",
+    revT:"따끈따끈 고객 후기 🔥",
+    revName1:"을미일주", revText1:"생각보다 잘 맞아서 신기했어요. 설명도 자세하고 좋네요!",
+    revName2:"갑진일주", revText2:"오행 분포 막대가 이해하기 쉬웠어요. 재밌게 봤습니다 ㅎㅎ",
+    revName3:"병인일주", revText3:"한국어·베트남어 둘 다 되는 게 좋아요. 친구한테도 공유했어요!",
+    revNote:"* 예시 후기입니다. 정식 오픈 후 실제 고객 후기로 교체됩니다.",
+    yearLabel:"태어난 해(년도)를 입력하세요", btnToday:"오늘의 운세 보기",
+    fOverall:"총운", fLove:"애정운", fMoney:"금전운", fHealth:"건강운",
+    luckyNum:"행운의 숫자", luckyColor:"행운의 색",
+    birthLabel:"생년월일을 입력하세요", solar:"양력", lunar:"음력", leapLabel:"윤달(閏月)",
+    hourLabel:"태어난 시간 (모르면 비워두세요)",
+    unknownHour:"모름", btnSaju:"사주 분석하기", aiTag:"정통 명리 분석",
+    elemBalance:"오행(五行) 분포",
+    sPersona:"타고난 성향", sWork:"일·재물운", sLove:"애정·인연운", sAdvice:"조언",
+    personA:"첫 번째 사람", personB:"두 번째 사람", btnMatch:"궁합 보기",
+    mRelation:"두 사람의 기운", mLove:"연애·결혼운", mAdvice:"관계 조언",
+    footer:"※ 본 풀이는 재미와 참고용입니다.",
+    alertYear:"태어난 해를 1900~2025 사이로 입력해 주세요.",
+    alertBirth:"생년월일을 올바르게 입력해 주세요.",
+    pillY:"년주", pillM:"월주", pillD:"일주", pillH:"시주"
+  },
+  vi:{
+    title:"Tử Vi · Tứ Trụ · Hợp Tuổi", subtitle:"Luận giải bằng AI theo ngày sinh",
+    tabToday:"Tử vi hôm nay", tabSaju:"Tứ trụ", tabMatch:"Hợp tuổi",
+    subToday:"Vận hôm nay theo ngày sinh", subSaju:"Tứ trụ & phân tích ngũ hành", subMatch:"Hợp tuổi hai người",
+    catAll:"Tất cả", catAdult:"18+", catLove:"Tình duyên", catReunion:"Tái hợp", catWealth:"Tài lộc", catMatch:"Hợp tuổi",
+    navHome:"Trang chủ", navToday:"Hôm nay", comingSoon:"Nội dung đang chuẩn bị. Sẽ sớm ra mắt!",
+    heroTodayT:"Tử vi hôm nay", heroTodayD:"Vận hôm nay theo ngày sinh",
+    heroSajuT:"Tứ trụ chính thống", heroSajuD:"Mệnh và ngũ hành bẩm sinh",
+    heroMatchT:"Hợp tuổi định mệnh", heroMatchD:"Điểm nhân duyên của hai người",
+    secLoveK:"Tình duyên · Crush", secLoveT:"Tò mò về vận tình duyên rung động?",
+    cLove1T:"Tử vi tình duyên 2026", cLove1D:"Nhân duyên năm nay là ai?",
+    cLove2T:"Tử vi thoát ế", cLove2D:"Bao giờ tôi sẽ yêu?",
+    cLove3T:"Tử vi crush thành công", cLove3D:"Lòng người ấy thế nào?",
+    secMarryK:"Hôn nhân · Gia đình", secMarryT:"Hôn nhân — bao giờ sẽ đến?",
+    cMarry1T:"Tử vi thời điểm kết hôn", cMarry1D:"Dòng vận hôn nhân của tôi",
+    cMarry2T:"Tử vi con cái", cMarry2D:"Khí vận của con yêu",
+    secReunK:"Tái hợp", secReunT:"Có người không thể quên…?",
+    cReun1T:"Tử vi khả năng tái hợp", cReun1D:"Có duyên gặp lại không?",
+    cReun2T:"Xem lại nhân duyên", cReun2D:"Phân tích duyên với người ấy",
+    secWealthK:"Phát triển · Tài lộc", secWealthT:"Tương lai sự nghiệp của tôi…?",
+    cWealth1T:"Tử vi tài lộc", cWealth1D:"5 năm nữa giàu được không?",
+    cWealth2T:"Tử vi nghề nghiệp", cWealth2D:"Nghề nào hợp với tôi?",
+    secMatchK:"Hợp tuổi", secMatchT:"Chúng ta có hợp nhau?",
+    cMatch1T:"Hợp tuổi người yêu", cMatch1D:"Điểm nhân duyên của hai người",
+    cMatch2T:"Hợp tuổi bạn · gia đình", cMatch2D:"Phân tích sự ăn ý",
+    secAdultK:"Người lớn · 18+", secAdultT:"Sức hút thầm kín của tôi?",
+    cAdult1T:"Phân tích sức hút", cAdult1D:"Điểm cuốn hút của tôi",
+    cAdult2T:"Sự ăn ý thầm kín", cAdult2D:"Chemistry ngầm giữa hai người",
+    rankT:"Tử vi đề xuất ✨",
+    rank1T:"Khi thần tạo ra tôi", rank1D:"Bản tính qua tứ trụ",
+    rank2T:"Phân tích hợp ngũ hành", rank2D:"Chúng ta có hợp nhau?",
+    rank3T:"Tử vi hôm nay", rank3D:"Vận ngày theo ngày sinh",
+    revT:"Đánh giá khách hàng 🔥",
+    revName1:"Tuổi Mùi", revText1:"Đúng hơn tôi nghĩ, thật kỳ diệu. Giải thích cũng chi tiết!",
+    revName2:"Tuổi Thìn", revText2:"Biểu đồ ngũ hành dễ hiểu. Xem rất vui hihi",
+    revName3:"Tuổi Dần", revText3:"Có cả tiếng Hàn và tiếng Việt thật tiện. Đã chia sẻ cho bạn bè!",
+    revNote:"* Đánh giá mẫu. Sẽ thay bằng đánh giá thật khi ra mắt chính thức.",
+    yearLabel:"Nhập năm sinh của bạn", btnToday:"Xem tử vi hôm nay",
+    fOverall:"Tổng quan", fLove:"Tình duyên", fMoney:"Tài lộc", fHealth:"Sức khỏe",
+    luckyNum:"Số may mắn", luckyColor:"Màu may mắn",
+    birthLabel:"Nhập ngày tháng năm sinh", solar:"Dương lịch", lunar:"Âm lịch", leapLabel:"Tháng nhuận",
+    hourLabel:"Giờ sinh (không rõ thì để trống)",
+    unknownHour:"Không rõ", btnSaju:"Phân tích tứ trụ", aiTag:"Phân tích mệnh lý",
+    elemBalance:"Phân bố Ngũ Hành",
+    sPersona:"Tính cách bẩm sinh", sWork:"Sự nghiệp · Tài lộc", sLove:"Tình duyên · Nhân duyên", sAdvice:"Lời khuyên",
+    personA:"Người thứ nhất", personB:"Người thứ hai", btnMatch:"Xem hợp tuổi",
+    mRelation:"Khí vận hai người", mLove:"Tình yêu · Hôn nhân", mAdvice:"Lời khuyên",
+    footer:"※ Kết quả chỉ mang tính tham khảo, giải trí.",
+    alertYear:"Vui lòng nhập năm sinh từ 1900 đến 2025.",
+    alertBirth:"Vui lòng nhập đúng ngày tháng năm sinh.",
+    pillY:"Trụ năm", pillM:"Trụ tháng", pillD:"Trụ ngày", pillH:"Trụ giờ"
+  }
+};
+
+/* ============================================================
+   12지(띠) — 베트남은 ②물소 ④고양이 ⑧염소
+   ============================================================ */
+const ZODIAC = [
+  {ko:{emoji:"🐭",name:"쥐띠"},   vi:{emoji:"🐭",name:"Tý (Chuột)"}},
+  {ko:{emoji:"🐮",name:"소띠"},   vi:{emoji:"🐃",name:"Sửu (Trâu)"}},
+  {ko:{emoji:"🐯",name:"호랑이띠"}, vi:{emoji:"🐯",name:"Dần (Hổ)"}},
+  {ko:{emoji:"🐰",name:"토끼띠"},  vi:{emoji:"🐱",name:"Mão (Mèo)"}},
+  {ko:{emoji:"🐲",name:"용띠"},   vi:{emoji:"🐲",name:"Thìn (Rồng)"}},
+  {ko:{emoji:"🐍",name:"뱀띠"},   vi:{emoji:"🐍",name:"Tỵ (Rắn)"}},
+  {ko:{emoji:"🐴",name:"말띠"},   vi:{emoji:"🐴",name:"Ngọ (Ngựa)"}},
+  {ko:{emoji:"🐑",name:"양띠"},   vi:{emoji:"🐐",name:"Mùi (Dê)"}},
+  {ko:{emoji:"🐵",name:"원숭이띠"}, vi:{emoji:"🐵",name:"Thân (Khỉ)"}},
+  {ko:{emoji:"🐔",name:"닭띠"},   vi:{emoji:"🐔",name:"Dậu (Gà)"}},
+  {ko:{emoji:"🐶",name:"개띠"},   vi:{emoji:"🐶",name:"Tuất (Chó)"}},
+  {ko:{emoji:"🐷",name:"돼지띠"},  vi:{emoji:"🐷",name:"Hợi (Lợn)"}}
+];
+
+/* 천간/지지 (한국 한자음 / 베트남 한자음) */
+const STEM = {
+  ko:["갑","을","병","정","무","기","경","신","임","계"],
+  vi:["Giáp","Ất","Bính","Đinh","Mậu","Kỷ","Canh","Tân","Nhâm","Quý"]
+};
+const BRANCH = {
+  ko:["자","축","인","묘","진","사","오","미","신","유","술","해"],
+  vi:["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"]
+};
+/* 오행: 0목 1화 2토 3금 4수 */
+const STEM_ELEM   = [0,0,1,1,2,2,3,3,4,4];           // 천간 오행
+const BRANCH_ELEM = [4,2,0,0,2,1,1,2,3,3,2,4];       // 지지 오행
+const ELEM = {
+  ko:["목(木)","화(火)","토(土)","금(金)","수(水)"],
+  vi:["Mộc (木)","Hỏa (火)","Thổ (土)","Kim (金)","Thủy (水)"]
+};
+
+/* ============================================================
+   오늘의 운세 문장 풀
+   ============================================================ */
+const TEXT = {
+  overall:{ko:[
+    "막혔던 일이 술술 풀리는 활기찬 하루입니다. 주변의 도움이 큰 힘이 됩니다.",
+    "차분하게 하나씩 정리하면 좋은 결과로 이어집니다. 서두르지 마세요.",
+    "예상치 못한 좋은 소식이 들려올 수 있습니다. 마음을 열어두세요.",
+    "작은 변화가 큰 기회로 이어지는 날입니다. 새로운 시도를 두려워 마세요.",
+    "오늘은 한 박자 쉬어가는 것이 더 큰 이득이 됩니다. 무리는 금물.",
+    "사람들과의 인연이 운을 끌어올립니다. 먼저 인사를 건네 보세요."
+  ],vi:[
+    "Một ngày tràn đầy năng lượng, việc bế tắc sẽ được tháo gỡ. Sự giúp đỡ xung quanh là sức mạnh lớn.",
+    "Bình tĩnh sắp xếp từng việc một sẽ dẫn đến kết quả tốt. Đừng vội vàng.",
+    "Có thể bạn sẽ nhận được tin vui bất ngờ. Hãy mở lòng đón nhận.",
+    "Một thay đổi nhỏ có thể mở ra cơ hội lớn. Đừng ngại thử điều mới.",
+    "Hôm nay nghỉ ngơi một nhịp lại có lợi hơn. Tránh làm quá sức.",
+    "Các mối quan hệ sẽ nâng cao vận may. Hãy chủ động chào hỏi trước."
+  ]},
+  love:{ko:[
+    "솔직한 마음을 표현하기 좋은 날입니다. 진심이 통합니다.",
+    "가까운 사람과의 작은 다툼은 대화로 풀립니다.",
+    "새로운 만남의 기운이 감도는 하루입니다.",
+    "상대의 입장을 헤아리면 관계가 더 깊어집니다.",
+    "연인이나 가족과 함께하는 시간이 행복을 줍니다.",
+    "기다리던 연락이 올 수 있으니 휴대폰을 확인해 보세요."
+  ],vi:[
+    "Ngày thích hợp để bày tỏ tình cảm chân thật. Tấm lòng sẽ được thấu hiểu.",
+    "Mâu thuẫn nhỏ với người thân sẽ được hóa giải qua trò chuyện.",
+    "Một ngày phảng phất khí vận của cuộc gặp gỡ mới.",
+    "Thấu hiểu cho đối phương sẽ giúp tình cảm thêm sâu sắc.",
+    "Thời gian bên người yêu hay gia đình sẽ mang lại hạnh phúc.",
+    "Có thể có tin nhắn bạn đang chờ, hãy kiểm tra điện thoại."
+  ]},
+  money:{ko:[
+    "뜻밖의 수입이 생길 수 있는 날입니다.",
+    "충동구매는 자제하세요. 지갑을 지키는 것이 이득입니다.",
+    "투자나 계약은 신중하게 한 번 더 검토하세요.",
+    "작은 절약이 모여 큰 결실이 됩니다.",
+    "재물운이 안정적입니다. 계획대로 진행하면 좋습니다.",
+    "주변의 금전 조언에 귀 기울이면 도움이 됩니다."
+  ],vi:[
+    "Một ngày có thể có khoản thu nhập bất ngờ.",
+    "Hãy kiềm chế mua sắm bốc đồng. Giữ ví tiền là có lợi.",
+    "Cân nhắc kỹ một lần nữa với đầu tư hay hợp đồng.",
+    "Tiết kiệm nhỏ tích góp lại sẽ thành quả lớn.",
+    "Tài vận ổn định. Cứ tiến hành theo kế hoạch là tốt.",
+    "Lắng nghe lời khuyên tài chính xung quanh sẽ có ích."
+  ]},
+  health:{ko:[
+    "가벼운 산책이 몸과 마음에 활력을 줍니다.",
+    "충분한 수분 섭취와 휴식을 잊지 마세요.",
+    "무리한 일정은 피하고 컨디션 조절에 신경 쓰세요.",
+    "규칙적인 식사가 오늘의 컨디션을 좌우합니다.",
+    "스트레칭으로 굳은 몸을 풀어주면 좋습니다.",
+    "전반적으로 건강한 기운이 가득한 하루입니다."
+  ],vi:[
+    "Đi bộ nhẹ nhàng sẽ mang lại sức sống cho cơ thể và tinh thần.",
+    "Đừng quên uống đủ nước và nghỉ ngơi.",
+    "Tránh lịch trình quá sức, chú ý điều chỉnh thể trạng.",
+    "Ăn uống điều độ sẽ quyết định thể trạng hôm nay.",
+    "Giãn cơ để thư giãn cơ thể đang căng cứng sẽ rất tốt.",
+    "Một ngày tràn đầy khí vận khỏe mạnh nói chung."
+  ]}
+};
+const COLORS = {
+  ko:["빨강","주황","노랑","초록","파랑","보라","흰색","검정","금색","분홍"],
+  vi:["Đỏ","Cam","Vàng","Xanh lá","Xanh dương","Tím","Trắng","Đen","Vàng kim","Hồng"]
+};
+
+/* ============================================================
+   사주: 오행별 분석 텍스트
+   ============================================================ */
+const ELEM_READING = {
+  persona:{ko:[
+    "목(木) 기운이 강해 성장과 추진력이 돋보입니다. 정이 많고 리더십이 있으며, 새로운 일을 시작하는 데 망설임이 없습니다.",
+    "화(火) 기운이 강해 열정적이고 표현력이 뛰어납니다. 사람을 끌어모으는 매력이 있으나 감정 기복은 다스릴 필요가 있습니다.",
+    "토(土) 기운이 강해 듬직하고 신뢰감을 줍니다. 인내심과 포용력이 크며, 한번 마음먹은 일은 끝까지 해냅니다.",
+    "금(金) 기운이 강해 원칙과 결단력이 분명합니다. 판단이 빠르고 의리가 있으며, 일을 깔끔하게 마무리합니다.",
+    "수(水) 기운이 강해 지혜롭고 유연합니다. 상황 적응력이 뛰어나고 생각이 깊으며, 사람의 마음을 잘 읽습니다."
+  ],vi:[
+    "Hành Mộc vượng, nổi bật ở sự phát triển và tính tiến thủ. Giàu tình cảm, có tố chất lãnh đạo, không ngần ngại bắt đầu việc mới.",
+    "Hành Hỏa vượng, nhiệt huyết và giỏi biểu đạt. Có sức hút thu hút mọi người, nhưng cần kiểm soát cảm xúc thất thường.",
+    "Hành Thổ vượng, vững vàng và tạo cảm giác tin cậy. Kiên nhẫn, bao dung, đã quyết là làm đến cùng.",
+    "Hành Kim vượng, nguyên tắc và quyết đoán rõ ràng. Phán đoán nhanh, trọng nghĩa khí, làm việc gọn gàng dứt khoát.",
+    "Hành Thủy vượng, thông tuệ và linh hoạt. Khả năng thích nghi cao, suy nghĩ sâu sắc, thấu hiểu lòng người."
+  ]},
+  work:{ko:[
+    "기획·교육·창업 분야에서 빛을 봅니다. 꾸준히 밀고 나가면 재물도 따라옵니다.",
+    "영업·예술·방송 등 사람을 상대하는 일에서 성과가 큽니다. 한 곳에 집중할 때 재물이 모입니다.",
+    "부동산·관리·중개 등 안정적인 분야가 잘 맞습니다. 신용이 곧 재산이 됩니다.",
+    "금융·법률·기술 등 전문 분야에서 인정받습니다. 결단력 있는 투자가 도움이 됩니다.",
+    "유통·무역·기획 등 흐름을 읽는 일에 강합니다. 정보가 곧 돈이 되는 사주입니다."
+  ],vi:[
+    "Tỏa sáng trong lĩnh vực hoạch định, giáo dục, khởi nghiệp. Kiên trì theo đuổi thì tài lộc cũng đến theo.",
+    "Thành quả lớn ở công việc tiếp xúc con người như kinh doanh, nghệ thuật, truyền thông. Tập trung một chỗ thì tiền tài tụ lại.",
+    "Phù hợp lĩnh vực ổn định như bất động sản, quản lý, môi giới. Chữ tín chính là tài sản.",
+    "Được công nhận trong lĩnh vực chuyên môn như tài chính, luật, kỹ thuật. Đầu tư quyết đoán sẽ có lợi.",
+    "Mạnh ở công việc nắm bắt xu hướng như phân phối, thương mại, hoạch định. Thông tin chính là tiền bạc."
+  ]},
+  love:{ko:[
+    "주도적으로 다가가는 연애를 합니다. 따뜻하게 이끌어주는 상대와 잘 맞습니다.",
+    "표현이 풍부하고 로맨틱합니다. 자신을 인정해주는 상대를 만나면 큰 행복을 누립니다.",
+    "한결같고 헌신적인 사랑을 합니다. 진중한 상대와 오래갑니다.",
+    "겉은 차분해도 속정이 깊습니다. 신뢰가 쌓이면 평생을 함께할 인연이 됩니다.",
+    "센스 있고 배려심 깊은 연애를 합니다. 대화가 잘 통하는 상대와 인연이 깊어집니다."
+  ],vi:[
+    "Yêu một cách chủ động. Hợp với người ấm áp biết dẫn dắt mình.",
+    "Biểu đạt phong phú và lãng mạn. Gặp người biết công nhận mình sẽ hạnh phúc lớn.",
+    "Yêu chung thủy và tận tụy. Bền lâu với người chín chắn.",
+    "Vẻ ngoài điềm tĩnh nhưng tình cảm sâu đậm. Khi tin tưởng tích lũy sẽ thành duyên trọn đời.",
+    "Yêu tinh tế và biết quan tâm. Duyên sâu đậm với người hợp trò chuyện."
+  ]},
+  advice:{ko:[
+    "때로는 속도를 늦추고 주변을 돌아보면 더 멀리 갈 수 있습니다.",
+    "감정을 차분히 다스리면 가진 매력이 두 배가 됩니다.",
+    "변화를 두려워 말고 한 걸음 새롭게 내디뎌 보세요.",
+    "유연함을 더하면 인간관계가 한결 부드러워집니다.",
+    "결정을 내릴 때 한 번 더 마음의 소리를 들어보세요."
+  ],vi:[
+    "Đôi khi chậm lại và nhìn quanh sẽ giúp bạn đi xa hơn.",
+    "Bình tĩnh kiểm soát cảm xúc thì sức hút của bạn nhân đôi.",
+    "Đừng sợ thay đổi, hãy bước một bước mới mẻ.",
+    "Thêm chút linh hoạt thì các mối quan hệ sẽ mềm mại hơn.",
+    "Khi quyết định, hãy lắng nghe thêm một lần tiếng nói trong tim."
+  ]}
+};
+
+/* ============================================================
+   궁합: 지지 관계별 분석
+   ============================================================ */
+const MATCH = {
+  // 0 삼합(최상) 1 육합(좋음) 2 보통 3 충(주의)
+  grade:{ko:["천생연분 🌟","좋은 인연 💕","무난한 사이 🙂","노력이 필요한 사이 🤝"],
+         vi:["Trời sinh một cặp 🌟","Duyên lành 💕","Bình hòa 🙂","Cần nỗ lực 🤝"]},
+  relation:{ko:[
+    "두 사람의 띠가 삼합(三合)을 이루어 기운이 자연스럽게 어우러집니다. 함께 있을수록 서로의 부족함을 채워주는 환상의 조합입니다.",
+    "두 사람의 띠가 육합(六合)을 이루어 마음이 잘 통합니다. 다툼이 있어도 금방 화해하는 따뜻한 관계입니다.",
+    "큰 충돌도 큰 끌림도 없는 편안한 관계입니다. 서로 배려하면 오래도록 안정적으로 함께할 수 있습니다.",
+    "두 사람의 띠가 충(沖)의 관계라 가치관 차이가 느껴질 수 있습니다. 다름을 인정하면 오히려 서로를 성장시키는 인연이 됩니다."
+  ],vi:[
+    "Tuổi hai người tạo thành Tam Hợp, khí vận hòa quyện tự nhiên. Càng bên nhau càng bù đắp khuyết điểm cho nhau — một cặp lý tưởng.",
+    "Tuổi hai người tạo thành Lục Hợp, tâm ý tương thông. Dù có cãi vã cũng nhanh làm hòa — mối quan hệ ấm áp.",
+    "Mối quan hệ thoải mái, không xung đột lớn cũng không cuốn hút mãnh liệt. Biết quan tâm nhau sẽ bền vững dài lâu.",
+    "Tuổi hai người ở thế Xung, có thể cảm nhận khác biệt quan niệm. Chấp nhận sự khác biệt thì lại là duyên giúp nhau trưởng thành."
+  ]},
+  love:{ko:[
+    "연애에서 결혼까지 순조롭게 이어질 기운이 강합니다. 서로를 향한 신뢰가 단단합니다.",
+    "알콩달콩 정이 깊어지는 사이입니다. 작은 표현이 관계를 더 단단하게 만듭니다.",
+    "천천히 알아갈수록 깊어지는 인연입니다. 조급해하지 않으면 좋은 결실을 맺습니다.",
+    "서로의 속도를 맞추는 노력이 필요합니다. 대화를 자주 나누면 갈등이 줄어듭니다."
+  ],vi:[
+    "Khí vận từ yêu đến hôn nhân suôn sẻ. Niềm tin dành cho nhau rất vững chắc.",
+    "Mối quan hệ tình cảm ngày càng ngọt ngào. Những thể hiện nhỏ làm tình cảm thêm bền.",
+    "Duyên càng tìm hiểu càng sâu đậm. Không vội vàng thì sẽ có kết quả tốt đẹp.",
+    "Cần nỗ lực điều chỉnh nhịp độ của nhau. Trò chuyện thường xuyên sẽ giảm mâu thuẫn."
+  ]},
+  advice:{ko:[
+    "지금의 좋은 기운을 믿고 함께 미래를 그려보세요.",
+    "감사의 표현을 자주 하면 행복이 오래갑니다.",
+    "서로의 취미를 함께 즐기면 거리가 더 가까워집니다.",
+    "다툴 때는 이기려 하지 말고 이해하려 해보세요."
+  ],vi:[
+    "Hãy tin vào khí vận tốt lành hiện tại và cùng vẽ nên tương lai.",
+    "Thường xuyên bày tỏ lòng biết ơn thì hạnh phúc sẽ dài lâu.",
+    "Cùng tận hưởng sở thích của nhau sẽ rút ngắn khoảng cách.",
+    "Khi tranh cãi, đừng cố thắng mà hãy cố thấu hiểu."
+  ]}
+};
+
+/* ============================================================
+   공통 로직
+   ============================================================ */
+let lang = "ko";
+
+function setLang(l){
+  lang = l;
+  document.documentElement.lang = l;
+  document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active", b.dataset.lang===l));
+  document.querySelectorAll("[data-t]").forEach(el=>{
+    const k = el.dataset.t; if(UI[l][k]) el.textContent = UI[l][k];
+  });
+  updateScreenHead();
+  // 떠 있는 결과 다시 그리기
+  if(last.today!==null) renderToday(last.today);
+  if(last.saju)  renderSaju(last.saju);
+  if(last.match) renderMatch(last.match);
+}
+const last = {today:null, saju:null, match:null};
+
+let curTab = "today";
+const TABMETA = {
+  today:{title:"tabToday", sub:"subToday"},
+  saju :{title:"tabSaju",  sub:"subSaju"},
+  match:{title:"tabMatch", sub:"subMatch"}
+};
+function updateScreenHead(){
+  const m = TABMETA[curTab];
+  document.getElementById("screen-title").textContent = UI[lang][m.title];
+  document.getElementById("screen-sub").textContent   = UI[lang][m.sub];
+}
+function setTab(name){
+  curTab = name;
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById("panel-"+name).classList.add("active");
+  updateScreenHead();
+}
+
+/* ===== 피드 ↔ 계산기 전환 ===== */
+function setNav(which){
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active", n.dataset.nav===which));
+}
+function openTool(tab){
+  document.getElementById("feed").classList.add("hidden");
+  document.getElementById("cats").classList.add("hidden");
+  document.getElementById("tool").classList.add("active");
+  setTab(tab);
+  setNav(tab);
+  window.scrollTo({top:0});
+}
+function closeTool(){
+  document.getElementById("tool").classList.remove("active");
+  document.getElementById("cats").classList.remove("hidden");
+  document.getElementById("feed").classList.remove("hidden");
+  setNav("home");
+  window.scrollTo({top:0});
+}
+function comingSoon(){ alert(UI[lang].comingSoon); }
+
+/* ===== 카테고리 필터 ===== */
+function filterCat(btn){
+  const c = btn.dataset.cat;
+  document.querySelectorAll(".cat").forEach(b=>b.classList.toggle("active", b===btn));
+  document.querySelectorAll("#feed .pcard").forEach(card=>{
+    card.style.display = (c==="all" || card.dataset.cat===c) ? "" : "none";
+  });
+  // 보이는 카드가 없는 주제 섹션은 숨김
+  document.querySelectorAll(".row-sec").forEach(sec=>{
+    const cards = sec.querySelectorAll(".pcard");
+    const anyVisible = Array.prototype.some.call(cards, k=>k.style.display!=="none");
+    sec.style.display = anyVisible ? "" : "none";
+  });
+}
+
+function pick(arr, seed){ return arr[((seed % arr.length)+arr.length)%arr.length]; }
+function zodiacIndex(y){ return ((y - 4) % 12 + 12) % 12; }
+
+/* 결과 카드를 부드럽게 등장시키기 */
+function reveal(id){
+  const el=document.getElementById(id);
+  el.style.display="block";
+  el.classList.remove("show"); void el.offsetWidth; el.classList.add("show");
+}
+
+function dayNumber(){
+  const now = new Date();
+  const start = new Date(now.getFullYear(),0,0);
+  return Math.floor((now - start)/86400000);
+}
+/* 율리우스적일(일주 계산용) */
+function jdn(y,m,d){
+  const a = Math.floor((14-m)/12);
+  const yy = y + 4800 - a;
+  const mm = m + 12*a - 3;
+  return d + Math.floor((153*mm+2)/5) + 365*yy + Math.floor(yy/4) - Math.floor(yy/100) + Math.floor(yy/400) - 32045;
+}
+
+/* ============================================================
+   음력 ↔ 양력 변환 (Hồ Ngọc Đức 알고리즘, 베트남 표준시 UTC+7)
+   설날(Tết) 11개 날짜 + 왕복 변환으로 검증 완료
+   ============================================================ */
+const TZ = 7;
+const INT = Math.floor;
+function jdFromDate(dd,mm,yy){
+  const a=INT((14-mm)/12), y=yy+4800-a, m=mm+12*a-3;
+  let jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-INT(y/100)+INT(y/400)-32045;
+  if(jd<2299161) jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-32083;
+  return jd;
+}
+function jdToDate(jd){
+  let a,b,c,d,e,m;
+  if(jd>2299160){ a=jd+32044; b=INT((4*a+3)/146097); c=a-INT((b*146097)/4); }
+  else { b=0; c=jd+32082; }
+  d=INT((4*c+3)/1461); e=c-INT((1461*d)/4); m=INT((5*e+2)/153);
+  const day=e-INT((153*m+2)/5)+1, month=m+3-12*INT(m/10), year=b*100+d-4800+INT(m/10);
+  return [day,month,year];
+}
+function NewMoon(k){
+  const T=k/1236.85,T2=T*T,T3=T2*T,dr=Math.PI/180;
+  let Jd1=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;
+  Jd1+=0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);
+  const M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;
+  const Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;
+  const F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;
+  let C1=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M);
+  C1+=-0.4068*Math.sin(Mpr*dr)+0.0161*Math.sin(dr*2*Mpr)-0.0004*Math.sin(dr*3*Mpr);
+  C1+=0.0104*Math.sin(dr*2*F)-0.0051*Math.sin(dr*(M+Mpr))-0.0074*Math.sin(dr*(M-Mpr));
+  C1+=0.0004*Math.sin(dr*(2*F+M))-0.0004*Math.sin(dr*(2*F-M))-0.0006*Math.sin(dr*(2*F+Mpr));
+  C1+=0.0010*Math.sin(dr*(2*F-Mpr))+0.0005*Math.sin(dr*(2*Mpr+M));
+  const deltat = (T<-11) ? 0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3
+                         : -0.000278+0.000265*T+0.000262*T2;
+  return Jd1+C1-deltat;
+}
+function SunLongitude(jdn){
+  const T=(jdn-2451545.0)/36525,T2=T*T,dr=Math.PI/180;
+  const M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;
+  const L0=280.46645+36000.76983*T+0.0003032*T2;
+  let DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M);
+  DL+=(0.019993-0.000101*T)*Math.sin(dr*2*M)+0.000290*Math.sin(dr*3*M);
+  let L=(L0+DL)*dr;
+  return L-Math.PI*2*INT(L/(Math.PI*2));
+}
+function getSunLongitude(dn,tz){ return INT(SunLongitude(dn-0.5-tz/24)/Math.PI*6); }
+function getNewMoonDay(k,tz){ return INT(NewMoon(k)+0.5+tz/24); }
+function getLunarMonth11(yy,tz){
+  const off=jdFromDate(31,12,yy)-2415021, k=INT(off/29.530588853);
+  let nm=getNewMoonDay(k,tz);
+  if(getSunLongitude(nm,tz)>=9) nm=getNewMoonDay(k-1,tz);
+  return nm;
+}
+function getLeapMonthOffset(a11,tz){
+  const k=INT((a11-2415021.076998695)/29.530588853+0.5);
+  let last=0,i=1,arc=getSunLongitude(getNewMoonDay(k+i,tz),tz);
+  do{ last=arc; i++; arc=getSunLongitude(getNewMoonDay(k+i,tz),tz); } while(arc!=last && i<14);
+  return i-1;
+}
+/* 음력 → 양력. 반환 [day,month,year] ([0,0,0]이면 잘못된 윤달) */
+function lunar2solar(lDay,lMonth,lYear,leap,tz){
+  let a11,b11;
+  if(lMonth<11){ a11=getLunarMonth11(lYear-1,tz); b11=getLunarMonth11(lYear,tz); }
+  else { a11=getLunarMonth11(lYear,tz); b11=getLunarMonth11(lYear+1,tz); }
+  let off=lMonth-11; if(off<0) off+=12;
+  if(b11-a11>365){
+    const leapOff=getLeapMonthOffset(a11,tz);
+    let leapMonth=leapOff-2; if(leapMonth<0) leapMonth+=12;
+    if(leap!=0 && lMonth!=leapMonth) return [0,0,0];
+    else if(leap!=0 || off>=leapOff) off+=1;
+  }
+  const k=INT(0.5+(a11-2415021.076998695)/29.530588853);
+  return jdToDate(getNewMoonDay(k+off,tz)+lDay-1);
+}
+
+/* ============================================================
+   날짜 입력 읽기 (양력/음력 공통) — 음력이면 양력으로 변환해 반환
+   ============================================================ */
+const cal = {t:"solar", s:"solar"};
+function setCal(prefix, btn){
+  cal[prefix]=btn.dataset.cal;
+  btn.parentNode.querySelectorAll(".cal").forEach(b=>b.classList.toggle("active", b===btn));
+  const row=document.getElementById(prefix+"-leap-row");
+  if(row) row.classList.toggle("show", cal[prefix]==="lunar");
+}
+function readBirth(prefix){
+  const y=parseInt(document.getElementById(prefix+"-y").value,10);
+  const m=parseInt(document.getElementById(prefix+"-m").value,10);
+  const d=parseInt(document.getElementById(prefix+"-d").value,10);
+  if(isNaN(y)||y<1900||y>2025||isNaN(m)||m<1||m>12||isNaN(d)||d<1||d>31){ alert(UI[lang].alertBirth); return null; }
+  if(cal[prefix]==="lunar"){
+    const leap=document.getElementById(prefix+"-leap").checked?1:0;
+    const s=lunar2solar(d,m,y,leap,TZ);
+    if(!s[2]){ alert(UI[lang].alertBirth); return null; }
+    return {y:s[2], m:s[1], d:s[0]};   // 변환된 양력
+  }
+  return {y,m,d};
+}
+
+/* ============================================================
+   1) 오늘의 운세
+   ============================================================ */
+function runToday(){
+  const b = readBirth("t");
+  if(!b) return;
+  last.today = b;            // 변환된 양력 생년월일
+  renderToday(b);
+}
+function renderToday(b){
+  const idx = zodiacIndex(b.y);
+  const z = ZODIAC[idx];
+  // 개인 맞춤: 본인 일주(60갑자) + 오늘 날짜 → 같은 띠라도 사람마다 다름
+  const personDay = ((jdn(b.y,b.m,b.d)+49)%60+60)%60;
+  const seed = dayNumber() + personDay;
+  document.getElementById("t-emoji").textContent = z[lang].emoji;
+  document.getElementById("t-name").textContent  = z[lang].name;
+  const n = new Date();
+  document.getElementById("t-date").textContent = lang==="ko"
+    ? `${n.getFullYear()}년 ${n.getMonth()+1}월 ${n.getDate()}일`
+    : `Ngày ${n.getDate()}/${n.getMonth()+1}/${n.getFullYear()}`;
+  document.getElementById("t-overall").textContent = pick(TEXT.overall[lang], seed);
+  document.getElementById("t-love").textContent    = pick(TEXT.love[lang], seed+1);
+  document.getElementById("t-money").textContent   = pick(TEXT.money[lang], seed+2);
+  document.getElementById("t-health").textContent  = pick(TEXT.health[lang], seed+3);
+  document.getElementById("t-num").textContent   = (seed%9)+1;
+  document.getElementById("t-color").textContent = pick(COLORS[lang], seed);
+  reveal("t-result");
+}
+
+/* ============================================================
+   2) 사주 — 사주팔자 + 오행 분석
+   ============================================================ */
+function runSaju(){
+  const b=readBirth("s");          // 음력이면 양력으로 변환됨
+  if(!b) return;
+  const h=parseInt(document.getElementById("s-h").value,10);
+  last.saju = {y:b.y,m:b.m,d:b.d,h};
+  renderSaju(last.saju);
+}
+/* 절기(節氣) 근사 — 입춘~소한. 각 절기가 시작되는 양력 월/일(±1일 오차)
+   o = 인월(寅)부터의 순서(0~11), b = 지지 index */
+function solarMonth(m,d){
+  const md=m*100+d;
+  const t=[
+    {md:106, b:1, o:11}, // 소한 → 축월
+    {md:204, b:2, o:0},  // 입춘 → 인월(한 해의 시작)
+    {md:306, b:3, o:1},  // 경칩 → 묘월
+    {md:405, b:4, o:2},  // 청명 → 진월
+    {md:506, b:5, o:3},  // 입하 → 사월
+    {md:606, b:6, o:4},  // 망종 → 오월
+    {md:707, b:7, o:5},  // 소서 → 미월
+    {md:808, b:8, o:6},  // 입추 → 신월
+    {md:908, b:9, o:7},  // 백로 → 유월
+    {md:1008,b:10,o:8},  // 한로 → 술월
+    {md:1107,b:11,o:9},  // 입동 → 해월
+    {md:1207,b:0, o:10}  // 대설 → 자월
+  ];
+  let chosen={b:0,o:10}; // 1/1~1/5: 전년 대설 기간(자월)
+  for(const x of t){ if(md>=x.md) chosen=x; }
+  return chosen;
+}
+function calcPillars(y,m,d,h){
+  // 입춘(2/4) 이전 출생은 명리상 '전 해'에 속함
+  const beforeIpchun = (m<2) || (m===2 && d<4);
+  const solarYear = beforeIpchun ? y-1 : y;
+
+  // 년주 — 절기 기준 해
+  const ys=((solarYear-4)%10+10)%10, yb=((solarYear-4)%12+12)%12;
+
+  // 월주 — 절기로 월 결정, 오호둔(五虎遁)으로 월간 산출
+  const sm=solarMonth(m,d);
+  const baseInyue=((ys%5)*2+2)%10;        // 인월의 천간
+  const ms=(baseInyue+sm.o)%10, mb=sm.b;
+
+  // 일주 — 율리우스적일 기반(절기와 무관, 연속)
+  const dayIdx=((jdn(y,m,d)+49)%60+60)%60;
+  const ds=dayIdx%10, db=dayIdx%12;
+
+  // 시주 — 오자둔(五子遁)
+  let hs=null, hb=null;
+  if(h>=0){ hb=h; hs=(((ds%5)*2)+h)%10; }
+  return {ys,yb,ms,mb,ds,db,hs,hb};
+}
+function renderSaju(o){
+  const p=calcPillars(o.y,o.m,o.d,o.h);
+  const z=ZODIAC[p.yb]; // 절기(입춘) 기준 띠
+  document.getElementById("s-emoji").textContent=z[lang].emoji;
+  document.getElementById("s-zodiac").textContent=z[lang].name;
+
+  // 오행 집계
+  const cnt=[0,0,0,0,0];
+  [p.ys,p.ms,p.ds].concat(p.hs!==null?[p.hs]:[]).forEach(s=>cnt[STEM_ELEM[s]]++);
+  [p.yb,p.mb,p.db].concat(p.hb!==null?[p.hb]:[]).forEach(b=>cnt[BRANCH_ELEM[b]]++);
+  let dom=0; for(let i=1;i<5;i++) if(cnt[i]>cnt[dom]) dom=i;
+
+  document.getElementById("s-elem").textContent =
+    (lang==="ko"?"강한 기운: ":"Khí vượng: ")+ELEM[lang][dom];
+
+  // 기둥 표
+  const labels=[UI[lang].pillH,UI[lang].pillD,UI[lang].pillM,UI[lang].pillY];
+  const data=[
+    p.hs!==null?{s:p.hs,b:p.hb}:null,
+    {s:p.ds,b:p.db},{s:p.ms,b:p.mb},{s:p.ys,b:p.yb}
+  ];
+  let html="";
+  for(let i=0;i<4;i++){
+    if(data[i]===null){
+      html+=`<div class="pillar"><div class="plabel">${labels[i]}</div><div class="pval">–</div><div class="pelem">${UI[lang].unknownHour}</div></div>`;
+    }else{
+      const s=data[i].s,b=data[i].b;
+      const txt=lang==="ko"?STEM.ko[s]+BRANCH.ko[b]:STEM.vi[s]+" "+BRANCH.vi[b];
+      html+=`<div class="pillar"><div class="plabel">${labels[i]}</div><div class="pval">${txt}</div><div class="pelem">${ELEM[lang][STEM_ELEM[s]]}</div></div>`;
+    }
+  }
+  document.getElementById("s-pillars").innerHTML=html;
+
+  // 오행 분포 막대
+  const total=cnt.reduce((a,b)=>a+b,0)||1;
+  let bal=`<div class="brow" style="margin-bottom:8px;"><span class="bname" style="width:auto;font-weight:700;color:var(--primary);">${UI[lang].elemBalance}</span></div>`;
+  for(let i=0;i<5;i++){
+    const pct=Math.round(cnt[i]/total*100);
+    bal+=`<div class="brow"><span class="bname">${ELEM[lang][i]}</span>`
+       + `<span class="btrack"><span class="bfill" style="width:${pct}%"></span></span>`
+       + `<span class="bnum">${cnt[i]}</span></div>`;
+  }
+  document.getElementById("s-balance").innerHTML=bal;
+
+  document.getElementById("s-persona").textContent = ELEM_READING.persona[lang][dom];
+  document.getElementById("s-work").textContent    = ELEM_READING.work[lang][dom];
+  document.getElementById("s-love").textContent    = ELEM_READING.love[lang][dom];
+  document.getElementById("s-advice").textContent  = ELEM_READING.advice[lang][dom];
+  reveal("s-result");
+}
+
+/* ============================================================
+   3) 궁합 — 지지(띠) 관계 기반
+   ============================================================ */
+function branchRelation(b1,b2){
+  if(b1===b2) return 2; // 같은 띠 → 보통
+  const diff=((b1-b2)%12+12)%12;
+  if(diff===6) return 3;                  // 충(반대)
+  if([4,8].includes(diff)) return 0;      // 삼합(4칸 간격)
+  // 육합 쌍
+  const six=[[0,1],[2,11],[3,10],[4,9],[5,8],[6,7]];
+  for(const [a,c] of six) if((b1===a&&b2===c)||(b1===c&&b2===a)) return 1;
+  return 2; // 그 외 보통
+}
+function runMatch(){
+  const y1=parseInt(document.getElementById("m-y1").value,10);
+  const y2=parseInt(document.getElementById("m-y2").value,10);
+  if(isNaN(y1)||isNaN(y2)||y1<1900||y2<1900||y1>2025||y2>2025){ alert(UI[lang].alertBirth); return; }
+  last.match={y1,y2};
+  renderMatch(last.match);
+}
+function renderMatch(o){
+  const b1=((o.y1-4)%12+12)%12, b2=((o.y2-4)%12+12)%12;
+  const rel=branchRelation(b1,b2);
+  const z1=ZODIAC[b1], z2=ZODIAC[b2];
+  document.getElementById("m-emoji").textContent = z1[lang].emoji+"💞"+z2[lang].emoji;
+  document.getElementById("m-pair").textContent  = z1[lang].name+"  ×  "+z2[lang].name;
+
+  const base=[96,88,74,60][rel];
+  const wob=((b1+b2)%6);             // 같은 등급 안에서 약간의 변화
+  const score=Math.min(99, base+wob);
+  document.getElementById("m-score").textContent=score;
+  document.getElementById("m-bar").style.width=score+"%";
+  document.getElementById("m-grade").textContent=MATCH.grade[lang][rel];
+  document.getElementById("m-relation").textContent=MATCH.relation[lang][rel];
+  document.getElementById("m-love").textContent=MATCH.love[lang][rel];
+  document.getElementById("m-advice").textContent=MATCH.advice[lang][rel];
+  reveal("m-result");
+}
+</script>
+</body>
+</html>
