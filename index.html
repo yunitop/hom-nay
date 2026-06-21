@@ -69,6 +69,12 @@
   .menu .m-ic{font-size:20px;width:24px;text-align:center;}
   .menu .m-sub{margin:16px 6px 4px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.5px;}
   .menu .m-link{color:var(--muted);font-size:14px;font-weight:600;padding:12px 6px;}
+
+  /* 맨 아래 언어 선택 */
+  .lang-foot{display:flex;justify-content:center;gap:8px;margin:20px 0 6px;flex-wrap:wrap;}
+  .lf-btn{background:rgba(255,255,255,0.05);border:1px solid var(--line);color:var(--muted);
+    padding:9px 16px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:700;transition:all .15s;}
+  .lf-btn.active{background:var(--primary);color:#fff;border-color:var(--primary);}
   .lang-btn{
     background:rgba(255,255,255,0.05);border:1px solid var(--line);color:var(--muted);
     padding:6px 12px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:700;transition:all .15s;
@@ -441,6 +447,13 @@
     <p class="policy"><a href="#" id="link-terms">이용약관</a> &nbsp;|&nbsp; <a href="#" id="link-privacy">개인정보처리방침</a></p>
     <p class="copyright">Copyright @ 2024 CYBERNETICS - All rights reserved</p>
   </section>
+
+  <!-- 언어 선택 (맨 아래) -->
+  <div class="lang-foot">
+    <button class="lf-btn" data-lang="ko" onclick="setLang('ko')">한국어</button>
+    <button class="lf-btn active" data-lang="vi" onclick="setLang('vi')">Tiếng Việt</button>
+    <button class="lf-btn" data-lang="en" onclick="setLang('en')">English</button>
+  </div>
 </main>
 
 <!-- ============ 계산기 (오버레이) ============ -->
@@ -715,6 +728,59 @@ const UI = {
     alertYear:"Vui lòng nhập năm sinh từ 1900 đến 2025.",
     alertBirth:"Vui lòng nhập đúng ngày tháng năm sinh.",
     pillY:"Trụ năm", pillM:"Trụ tháng", pillD:"Trụ ngày", pillH:"Trụ giờ"
+  },
+  en:{
+    title:"Fortune · Four Pillars · Compatibility", subtitle:"AI-style readings by your birth date",
+    tabToday:"Today's Fortune", tabSaju:"Four Pillars", tabMatch:"Compatibility",
+    subToday:"Today's luck by your birth date", subSaju:"Four Pillars & Five Elements", subMatch:"Compatibility of two people",
+    catAll:"All", catAdult:"18+", catLove:"Love", catReunion:"Reunion", catWealth:"Wealth", catMatch:"Match",
+    navHome:"Home", navToday:"Today", comingSoon:"This content is coming soon. Stay tuned!",
+    badgeToday:"TODAY", menuInfo:"Support", menuContact:"Contact us", menuTerms:"Terms", menuPrivacy:"Privacy Policy",
+    heroTodayT:"Today's Fortune", heroTodayD:"Today's luck by your birth date",
+    heroSajuT:"Four Pillars (Saju)", heroSajuD:"Your destiny & five elements",
+    heroMatchT:"Destined Compatibility", heroMatchD:"The bond score of two people",
+    secLoveK:"Love · Crush", secLoveT:"Curious about your love luck?",
+    cLove1T:"2026 Love Fortune", cLove1D:"Who's the one this year?",
+    cLove2T:"Find Love Reading", cLove2D:"When will I fall in love?",
+    cLove3T:"Crush Success Reading", cLove3D:"What's on their mind?",
+    secMarryK:"Marriage · Family", secMarryT:"Marriage — when will it come?",
+    cMarry1T:"Marriage Timing", cMarry1D:"Your marriage luck flow",
+    cMarry2T:"Pregnancy & Children", cMarry2D:"Your child's energy",
+    secReunK:"Reunion", secReunT:"Is there someone you can't forget?",
+    cReun1T:"Reunion Chances", cReun1D:"Are we destined to meet again?",
+    cReun2T:"Revisit the Bond", cReun2D:"Analyze your bond with them",
+    secWealthK:"Growth · Wealth", secWealthT:"What should I do for a living?",
+    cWealth1T:"Wealth Fortune", cWealth1D:"Can I get rich within 5 years?",
+    cWealth2T:"Career & Aptitude", cWealth2D:"Which job suits me?",
+    secMatchK:"Compatibility", secMatchT:"Are we a good match?",
+    cMatch1T:"Couple Compatibility", cMatch1D:"The bond score of two people",
+    cMatch2T:"Friends & Family Match", cMatch2D:"Analyze your chemistry",
+    secAdultK:"Adult · 18+", secAdultT:"What's your hidden charm?",
+    cAdult1T:"Charm Analysis", cAdult1D:"Your point of attraction",
+    cAdult2T:"Hidden Chemistry", cAdult2D:"The subtle chemistry between you",
+    rankT:"Recommended Readings ✨",
+    rank1T:"When Heaven Made Me", rank1D:"Your true nature by Saju",
+    rank2T:"Five Elements Match", rank2D:"Are we a good match?",
+    rank3T:"Today's Fortune", rank3D:"Daily fortune by your birth date",
+    revT:"Hot Customer Reviews 🔥",
+    revName1:"Year of the Goat", revText1:"More accurate than I expected — amazing. The explanation was detailed too!",
+    revName2:"Year of the Dragon", revText2:"The five-elements chart was easy to understand. Fun read hehe",
+    revName3:"Year of the Tiger", revText3:"Love that it has both Korean and Vietnamese. Shared it with friends!",
+    revNote:"* Sample reviews. They will be replaced with real customer reviews after launch.",
+    yearLabel:"Enter your birth year", btnToday:"See today's fortune",
+    fOverall:"Overall", fLove:"Love", fMoney:"Wealth", fHealth:"Health",
+    luckyNum:"Lucky number", luckyColor:"Lucky color",
+    birthLabel:"Enter your date of birth", solar:"Solar", lunar:"Lunar", leapLabel:"Leap month",
+    hourLabel:"Birth time (leave blank if unknown)",
+    unknownHour:"Unknown", btnSaju:"Analyze Four Pillars", aiTag:"Myeongri Analysis",
+    elemBalance:"Five Elements balance",
+    sPersona:"Innate nature", sWork:"Work & Wealth", sLove:"Love & Relationships", sAdvice:"Advice",
+    personA:"First person", personB:"Second person", btnMatch:"See compatibility",
+    mRelation:"Energy of the two", mLove:"Love & Marriage", mAdvice:"Relationship advice",
+    footer:"※ For entertainment and reference only.",
+    alertYear:"Please enter a birth year between 1900 and 2025.",
+    alertBirth:"Please enter a valid date of birth.",
+    pillY:"Year", pillM:"Month", pillD:"Day", pillH:"Hour"
   }
 };
 
@@ -722,35 +788,38 @@ const UI = {
    12지(띠) — 베트남은 ②물소 ④고양이 ⑧염소
    ============================================================ */
 const ZODIAC = [
-  {ko:{emoji:"🐭",name:"쥐띠"},   vi:{emoji:"🐭",name:"Tý (Chuột)"}},
-  {ko:{emoji:"🐮",name:"소띠"},   vi:{emoji:"🐃",name:"Sửu (Trâu)"}},
-  {ko:{emoji:"🐯",name:"호랑이띠"}, vi:{emoji:"🐯",name:"Dần (Hổ)"}},
-  {ko:{emoji:"🐰",name:"토끼띠"},  vi:{emoji:"🐱",name:"Mão (Mèo)"}},
-  {ko:{emoji:"🐲",name:"용띠"},   vi:{emoji:"🐲",name:"Thìn (Rồng)"}},
-  {ko:{emoji:"🐍",name:"뱀띠"},   vi:{emoji:"🐍",name:"Tỵ (Rắn)"}},
-  {ko:{emoji:"🐴",name:"말띠"},   vi:{emoji:"🐴",name:"Ngọ (Ngựa)"}},
-  {ko:{emoji:"🐑",name:"양띠"},   vi:{emoji:"🐐",name:"Mùi (Dê)"}},
-  {ko:{emoji:"🐵",name:"원숭이띠"}, vi:{emoji:"🐵",name:"Thân (Khỉ)"}},
-  {ko:{emoji:"🐔",name:"닭띠"},   vi:{emoji:"🐔",name:"Dậu (Gà)"}},
-  {ko:{emoji:"🐶",name:"개띠"},   vi:{emoji:"🐶",name:"Tuất (Chó)"}},
-  {ko:{emoji:"🐷",name:"돼지띠"},  vi:{emoji:"🐷",name:"Hợi (Lợn)"}}
+  {ko:{emoji:"🐭",name:"쥐띠"},   vi:{emoji:"🐭",name:"Tý (Chuột)"},   en:{emoji:"🐭",name:"Rat"}},
+  {ko:{emoji:"🐮",name:"소띠"},   vi:{emoji:"🐃",name:"Sửu (Trâu)"},   en:{emoji:"🐮",name:"Ox"}},
+  {ko:{emoji:"🐯",name:"호랑이띠"}, vi:{emoji:"🐯",name:"Dần (Hổ)"},     en:{emoji:"🐯",name:"Tiger"}},
+  {ko:{emoji:"🐰",name:"토끼띠"},  vi:{emoji:"🐱",name:"Mão (Mèo)"},    en:{emoji:"🐰",name:"Rabbit"}},
+  {ko:{emoji:"🐲",name:"용띠"},   vi:{emoji:"🐲",name:"Thìn (Rồng)"},  en:{emoji:"🐲",name:"Dragon"}},
+  {ko:{emoji:"🐍",name:"뱀띠"},   vi:{emoji:"🐍",name:"Tỵ (Rắn)"},     en:{emoji:"🐍",name:"Snake"}},
+  {ko:{emoji:"🐴",name:"말띠"},   vi:{emoji:"🐴",name:"Ngọ (Ngựa)"},   en:{emoji:"🐴",name:"Horse"}},
+  {ko:{emoji:"🐑",name:"양띠"},   vi:{emoji:"🐐",name:"Mùi (Dê)"},     en:{emoji:"🐑",name:"Goat"}},
+  {ko:{emoji:"🐵",name:"원숭이띠"}, vi:{emoji:"🐵",name:"Thân (Khỉ)"},   en:{emoji:"🐵",name:"Monkey"}},
+  {ko:{emoji:"🐔",name:"닭띠"},   vi:{emoji:"🐔",name:"Dậu (Gà)"},     en:{emoji:"🐔",name:"Rooster"}},
+  {ko:{emoji:"🐶",name:"개띠"},   vi:{emoji:"🐶",name:"Tuất (Chó)"},   en:{emoji:"🐶",name:"Dog"}},
+  {ko:{emoji:"🐷",name:"돼지띠"},  vi:{emoji:"🐷",name:"Hợi (Lợn)"},    en:{emoji:"🐷",name:"Pig"}}
 ];
 
 /* 천간/지지 (한국 한자음 / 베트남 한자음) */
 const STEM = {
   ko:["갑","을","병","정","무","기","경","신","임","계"],
-  vi:["Giáp","Ất","Bính","Đinh","Mậu","Kỷ","Canh","Tân","Nhâm","Quý"]
+  vi:["Giáp","Ất","Bính","Đinh","Mậu","Kỷ","Canh","Tân","Nhâm","Quý"],
+  en:["Jia","Yi","Bing","Ding","Wu","Ji","Geng","Xin","Ren","Gui"]
 };
 const BRANCH = {
   ko:["자","축","인","묘","진","사","오","미","신","유","술","해"],
-  vi:["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"]
+  vi:["Tý","Sửu","Dần","Mão","Thìn","Tỵ","Ngọ","Mùi","Thân","Dậu","Tuất","Hợi"],
+  en:["Zi","Chou","Yin","Mao","Chen","Si","Wu","Wei","Shen","You","Xu","Hai"]
 };
 /* 오행: 0목 1화 2토 3금 4수 */
 const STEM_ELEM   = [0,0,1,1,2,2,3,3,4,4];           // 천간 오행
 const BRANCH_ELEM = [4,2,0,0,2,1,1,2,3,3,2,4];       // 지지 오행
 const ELEM = {
   ko:["목(木)","화(火)","토(土)","금(金)","수(水)"],
-  vi:["Mộc (木)","Hỏa (火)","Thổ (土)","Kim (金)","Thủy (水)"]
+  vi:["Mộc (木)","Hỏa (火)","Thổ (土)","Kim (金)","Thủy (水)"],
+  en:["Wood (木)","Fire (火)","Earth (土)","Metal (金)","Water (水)"]
 };
 
 /* ============================================================
@@ -771,6 +840,13 @@ const TEXT = {
     "Một thay đổi nhỏ có thể mở ra cơ hội lớn. Đừng ngại thử điều mới.",
     "Hôm nay nghỉ ngơi một nhịp lại có lợi hơn. Tránh làm quá sức.",
     "Các mối quan hệ sẽ nâng cao vận may. Hãy chủ động chào hỏi trước."
+  ],en:[
+    "A lively day where stuck matters start to flow. Help from those around you is a great strength.",
+    "Calmly sorting things out one by one leads to good results. Don't rush.",
+    "Unexpected good news may reach you. Keep an open mind.",
+    "A day when a small change leads to a big opportunity. Don't fear trying something new.",
+    "Today, taking a breather brings greater gain. Avoid overdoing it.",
+    "Connections with people lift your luck. Try greeting others first."
   ]},
   love:{ko:[
     "솔직한 마음을 표현하기 좋은 날입니다. 진심이 통합니다.",
@@ -786,6 +862,13 @@ const TEXT = {
     "Thấu hiểu cho đối phương sẽ giúp tình cảm thêm sâu sắc.",
     "Thời gian bên người yêu hay gia đình sẽ mang lại hạnh phúc.",
     "Có thể có tin nhắn bạn đang chờ, hãy kiểm tra điện thoại."
+  ],en:[
+    "A good day to express your honest feelings. Sincerity gets through.",
+    "A small quarrel with someone close is resolved through conversation.",
+    "A day carrying the air of a new encounter.",
+    "Considering your partner's point of view deepens the relationship.",
+    "Time with a loved one or family brings happiness.",
+    "The message you've been waiting for may arrive — check your phone."
   ]},
   money:{ko:[
     "뜻밖의 수입이 생길 수 있는 날입니다.",
@@ -801,6 +884,13 @@ const TEXT = {
     "Tiết kiệm nhỏ tích góp lại sẽ thành quả lớn.",
     "Tài vận ổn định. Cứ tiến hành theo kế hoạch là tốt.",
     "Lắng nghe lời khuyên tài chính xung quanh sẽ có ích."
+  ],en:[
+    "A day when unexpected income may come.",
+    "Hold back on impulse buying. Guarding your wallet pays off.",
+    "Review investments or contracts carefully one more time.",
+    "Small savings add up to a big harvest.",
+    "Your wealth luck is stable. Proceeding as planned is good.",
+    "Listening to the financial advice around you will help."
   ]},
   health:{ko:[
     "가벼운 산책이 몸과 마음에 활력을 줍니다.",
@@ -816,11 +906,19 @@ const TEXT = {
     "Ăn uống điều độ sẽ quyết định thể trạng hôm nay.",
     "Giãn cơ để thư giãn cơ thể đang căng cứng sẽ rất tốt.",
     "Một ngày tràn đầy khí vận khỏe mạnh nói chung."
+  ],en:[
+    "A light walk brings energy to body and mind.",
+    "Don't forget enough water and rest.",
+    "Avoid an overpacked schedule and mind your condition.",
+    "Regular meals decide today's condition.",
+    "Stretching to loosen a stiff body is good.",
+    "Overall, a day full of healthy energy."
   ]}
 };
 const COLORS = {
   ko:["빨강","주황","노랑","초록","파랑","보라","흰색","검정","금색","분홍"],
-  vi:["Đỏ","Cam","Vàng","Xanh lá","Xanh dương","Tím","Trắng","Đen","Vàng kim","Hồng"]
+  vi:["Đỏ","Cam","Vàng","Xanh lá","Xanh dương","Tím","Trắng","Đen","Vàng kim","Hồng"],
+  en:["Red","Orange","Yellow","Green","Blue","Purple","White","Black","Gold","Pink"]
 };
 
 /* ============================================================
@@ -839,6 +937,12 @@ const ELEM_READING = {
     "Hành Thổ vượng, vững vàng và tạo cảm giác tin cậy. Kiên nhẫn, bao dung, đã quyết là làm đến cùng.",
     "Hành Kim vượng, nguyên tắc và quyết đoán rõ ràng. Phán đoán nhanh, trọng nghĩa khí, làm việc gọn gàng dứt khoát.",
     "Hành Thủy vượng, thông tuệ và linh hoạt. Khả năng thích nghi cao, suy nghĩ sâu sắc, thấu hiểu lòng người."
+  ],en:[
+    "With strong Wood energy, growth and drive stand out. Warm-hearted with leadership, you don't hesitate to start new things.",
+    "With strong Fire energy, you're passionate and expressive. You draw people in, but mood swings need managing.",
+    "With strong Earth energy, you're steady and reassuring. Patient and embracing, you see through what you set your mind to.",
+    "With strong Metal energy, your principles and decisiveness are clear. Quick to judge and loyal, you finish things cleanly.",
+    "With strong Water energy, you're wise and flexible. Highly adaptable and deep-thinking, you read people well."
   ]},
   work:{ko:[
     "기획·교육·창업 분야에서 빛을 봅니다. 꾸준히 밀고 나가면 재물도 따라옵니다.",
@@ -852,6 +956,12 @@ const ELEM_READING = {
     "Phù hợp lĩnh vực ổn định như bất động sản, quản lý, môi giới. Chữ tín chính là tài sản.",
     "Được công nhận trong lĩnh vực chuyên môn như tài chính, luật, kỹ thuật. Đầu tư quyết đoán sẽ có lợi.",
     "Mạnh ở công việc nắm bắt xu hướng như phân phối, thương mại, hoạch định. Thông tin chính là tiền bạc."
+  ],en:[
+    "You shine in planning, education, and startups. Push steadily and wealth follows.",
+    "You achieve much in people-facing work like sales, art, and broadcasting. Focus in one place and wealth gathers.",
+    "Stable fields like real estate, management, and brokerage suit you. Trust becomes your asset.",
+    "You're recognized in specialized fields like finance, law, and tech. Decisive investment helps.",
+    "You're strong at trend-reading work like distribution, trade, and planning. Information becomes money."
   ]},
   love:{ko:[
     "주도적으로 다가가는 연애를 합니다. 따뜻하게 이끌어주는 상대와 잘 맞습니다.",
@@ -865,6 +975,12 @@ const ELEM_READING = {
     "Yêu chung thủy và tận tụy. Bền lâu với người chín chắn.",
     "Vẻ ngoài điềm tĩnh nhưng tình cảm sâu đậm. Khi tin tưởng tích lũy sẽ thành duyên trọn đời.",
     "Yêu tinh tế và biết quan tâm. Duyên sâu đậm với người hợp trò chuyện."
+  ],en:[
+    "You love proactively. You match well with a warm partner who guides you.",
+    "You're expressive and romantic. With a partner who appreciates you, you find great happiness.",
+    "You love steadily and devotedly. You last long with a serious partner.",
+    "Calm outside but deep within. Once trust builds, it becomes a lifelong bond.",
+    "You love with sense and care. The bond deepens with a partner you click with in conversation."
   ]},
   advice:{ko:[
     "때로는 속도를 늦추고 주변을 돌아보면 더 멀리 갈 수 있습니다.",
@@ -878,6 +994,12 @@ const ELEM_READING = {
     "Đừng sợ thay đổi, hãy bước một bước mới mẻ.",
     "Thêm chút linh hoạt thì các mối quan hệ sẽ mềm mại hơn.",
     "Khi quyết định, hãy lắng nghe thêm một lần tiếng nói trong tim."
+  ],en:[
+    "Sometimes slowing down and looking around lets you go farther.",
+    "Calmly managing your emotions doubles your charm.",
+    "Don't fear change — take a fresh step forward.",
+    "Adding flexibility makes relationships much smoother.",
+    "When deciding, listen once more to the voice of your heart."
   ]}
 };
 
@@ -887,7 +1009,8 @@ const ELEM_READING = {
 const MATCH = {
   // 0 삼합(최상) 1 육합(좋음) 2 보통 3 충(주의)
   grade:{ko:["천생연분 🌟","좋은 인연 💕","무난한 사이 🙂","노력이 필요한 사이 🤝"],
-         vi:["Trời sinh một cặp 🌟","Duyên lành 💕","Bình hòa 🙂","Cần nỗ lực 🤝"]},
+         vi:["Trời sinh một cặp 🌟","Duyên lành 💕","Bình hòa 🙂","Cần nỗ lực 🤝"],
+         en:["A match made in heaven 🌟","A good bond 💕","An easygoing pair 🙂","Needs some effort 🤝"]},
   relation:{ko:[
     "두 사람의 띠가 삼합(三合)을 이루어 기운이 자연스럽게 어우러집니다. 함께 있을수록 서로의 부족함을 채워주는 환상의 조합입니다.",
     "두 사람의 띠가 육합(六合)을 이루어 마음이 잘 통합니다. 다툼이 있어도 금방 화해하는 따뜻한 관계입니다.",
@@ -898,6 +1021,11 @@ const MATCH = {
     "Tuổi hai người tạo thành Lục Hợp, tâm ý tương thông. Dù có cãi vã cũng nhanh làm hòa — mối quan hệ ấm áp.",
     "Mối quan hệ thoải mái, không xung đột lớn cũng không cuốn hút mãnh liệt. Biết quan tâm nhau sẽ bền vững dài lâu.",
     "Tuổi hai người ở thế Xung, có thể cảm nhận khác biệt quan niệm. Chấp nhận sự khác biệt thì lại là duyên giúp nhau trưởng thành."
+  ],en:[
+    "Your zodiac signs form a 'three harmony' (samhap), so your energies blend naturally. The more you're together, the more you complete each other — a wonderful pair.",
+    "Your zodiac signs form a 'six harmony' (yukhap), so your hearts connect well. Even after a spat you make up quickly — a warm relationship.",
+    "A comfortable relationship with no big clashes or strong pulls. With mutual care, you can stay stable together for a long time.",
+    "Your zodiac signs are in 'clash' (chung), so you may feel a gap in values. Accepting the differences turns it into a bond that helps you both grow."
   ]},
   love:{ko:[
     "연애에서 결혼까지 순조롭게 이어질 기운이 강합니다. 서로를 향한 신뢰가 단단합니다.",
@@ -909,6 +1037,11 @@ const MATCH = {
     "Mối quan hệ tình cảm ngày càng ngọt ngào. Những thể hiện nhỏ làm tình cảm thêm bền.",
     "Duyên càng tìm hiểu càng sâu đậm. Không vội vàng thì sẽ có kết quả tốt đẹp.",
     "Cần nỗ lực điều chỉnh nhịp độ của nhau. Trò chuyện thường xuyên sẽ giảm mâu thuẫn."
+  ],en:[
+    "Strong energy to move smoothly from dating to marriage. Your trust in each other is solid.",
+    "A sweet, deepening relationship. Small gestures make the bond stronger.",
+    "A bond that deepens as you slowly get to know each other. Don't rush and you'll bear good fruit.",
+    "It takes effort to match each other's pace. Talking often reduces conflict."
   ]},
   advice:{ko:[
     "지금의 좋은 기운을 믿고 함께 미래를 그려보세요.",
@@ -920,6 +1053,11 @@ const MATCH = {
     "Thường xuyên bày tỏ lòng biết ơn thì hạnh phúc sẽ dài lâu.",
     "Cùng tận hưởng sở thích của nhau sẽ rút ngắn khoảng cách.",
     "Khi tranh cãi, đừng cố thắng mà hãy cố thấu hiểu."
+  ],en:[
+    "Trust the good energy now and picture the future together.",
+    "Express gratitude often and happiness lasts long.",
+    "Enjoying each other's hobbies together brings you closer.",
+    "When you argue, try to understand rather than to win."
   ]}
 };
 
@@ -932,6 +1070,7 @@ function setLang(l){
   lang = l;
   document.documentElement.lang = l;
   document.querySelectorAll(".lang-btn").forEach(b=>b.classList.toggle("active", b.dataset.lang===l));
+  document.querySelectorAll(".lf-btn").forEach(b=>b.classList.toggle("active", b.dataset.lang===l));
   document.querySelectorAll("[data-t]").forEach(el=>{
     const k = el.dataset.t; if(UI[l][k]) el.textContent = UI[l][k];
   });
@@ -1143,9 +1282,11 @@ function renderToday(b){
   document.getElementById("t-emoji").textContent = z[lang].emoji;
   document.getElementById("t-name").textContent  = z[lang].name;
   const n = new Date();
-  document.getElementById("t-date").textContent = lang==="ko"
-    ? `${n.getFullYear()}년 ${n.getMonth()+1}월 ${n.getDate()}일`
-    : `Ngày ${n.getDate()}/${n.getMonth()+1}/${n.getFullYear()}`;
+  const EN_MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  document.getElementById("t-date").textContent =
+      lang==="ko" ? `${n.getFullYear()}년 ${n.getMonth()+1}월 ${n.getDate()}일`
+    : lang==="vi" ? `Ngày ${n.getDate()}/${n.getMonth()+1}/${n.getFullYear()}`
+    : `${EN_MON[n.getMonth()]} ${n.getDate()}, ${n.getFullYear()}`;
   document.getElementById("t-overall").textContent = pick(TEXT.overall[lang], seed);
   document.getElementById("t-love").textContent    = pick(TEXT.love[lang], seed+1);
   document.getElementById("t-money").textContent   = pick(TEXT.money[lang], seed+2);
@@ -1222,7 +1363,7 @@ function renderSaju(o){
   let dom=0; for(let i=1;i<5;i++) if(cnt[i]>cnt[dom]) dom=i;
 
   document.getElementById("s-elem").textContent =
-    (lang==="ko"?"강한 기운: ":"Khí vượng: ")+ELEM[lang][dom];
+    (lang==="ko"?"강한 기운: ":lang==="vi"?"Khí vượng: ":"Strong element: ")+ELEM[lang][dom];
 
   // 기둥 표
   const labels=[UI[lang].pillH,UI[lang].pillD,UI[lang].pillM,UI[lang].pillY];
@@ -1236,7 +1377,7 @@ function renderSaju(o){
       html+=`<div class="pillar"><div class="plabel">${labels[i]}</div><div class="pval">–</div><div class="pelem">${UI[lang].unknownHour}</div></div>`;
     }else{
       const s=data[i].s,b=data[i].b;
-      const txt=lang==="ko"?STEM.ko[s]+BRANCH.ko[b]:STEM.vi[s]+" "+BRANCH.vi[b];
+      const txt=lang==="ko"?STEM.ko[s]+BRANCH.ko[b]:STEM[lang][s]+" "+BRANCH[lang][b];
       html+=`<div class="pillar"><div class="plabel">${labels[i]}</div><div class="pval">${txt}</div><div class="pelem">${ELEM[lang][STEM_ELEM[s]]}</div></div>`;
     }
   }
