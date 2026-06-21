@@ -1,0 +1,54 @@
+FATE — 사주 스토리 일러스트 생성 가이드
+========================================
+
+5가지 오행(목·화·토·금·수) 스토리, 각 4장면 = 총 20장.
+아래 영어 프롬프트를 Midjourney / DALL·E / Leonardo 등 AI 이미지 생성기에 넣어
+그림을 만든 뒤, 파일명을 그대로 맞춰 이 폴더(assets/img/story/)에 넣으면
+사이트에 자동으로 표시됩니다. (이모지 placeholder가 그림으로 바뀜)
+
+[권장 설정]
+- 비율(Aspect ratio): 4:5 또는 3:4 (세로형)
+- 형식: jpg, 한 장 300KB 이하 권장
+- 파일명: 아래 표기 그대로 (예: wood-1.jpg)
+
+[공통 스타일 — 모든 프롬프트 끝에 붙이세요]
+  vertical 4:5 Korean webtoon / manhwa illustration, cinematic soft lighting,
+  mystical and elegant, dark moody background, highly detailed, no text, no watermark
+
+────────────────────────────────────────
+■ 목(木) — "씨앗에서 숲으로"  (녹색 톤)
+wood-1.jpg : A single tiny green sprout breaking through cold dark soil, reaching toward a soft beam of spring light, dew drops, ethereal.
+wood-2.jpg : A young confident person standing tall like a growing tree, fresh leaves and vines rising around them, warm leadership aura, green glow.
+wood-3.jpg : A slender tree bending in a strong storm wind, leaves scattering, dramatic but resilient, deep green and grey tones.
+wood-4.jpg : A magnificent giant ancient tree sheltering weary travelers resting in its shade, lush forest, golden-green light, hopeful.
+
+■ 화(火) — "불꽃의 춤"  (붉은·주황 톤)
+fire-1.jpg : A single spark igniting in deep darkness, a tiny ember blossoming into flame, glowing orange light in a black void, magical.
+fire-2.jpg : A radiant charismatic person surrounded by warm firelight and floating embers, people gathering joyfully, glowing red-orange.
+fire-3.jpg : A wild roaring bonfire burning too fiercely, sparks flying into the night sky, intense dramatic flames, emotional energy.
+fire-4.jpg : A steadfast lighthouse beaming warm golden light across a dark stormy sea, guiding lost ships, hopeful, red and gold.
+
+■ 토(土) — "산이 된 사람"  (갈색·금색 톤)
+earth-1.jpg : Deep rich layered earth and soil cradling seeds underground with roots, warm brown tones, calm and nurturing.
+earth-2.jpg : A calm dependable person standing firm like solid ground, others leaning on them for support, warm earthy golden light.
+earth-3.jpg : A figure carrying a heavy mountain of burdens on their back, strained yet steady, dramatic earthy tones.
+earth-4.jpg : A majestic solitary mountain peak standing firm through passing storm clouds, people looking up in awe, golden sunrise.
+
+■ 금(金) — "벼려진 검"  (은빛·청회색 톤)
+metal-1.jpg : A raw glowing ore vein hidden inside dark rugged mountain rock, hints of shining metal, mysterious, cool silver-blue light.
+metal-2.jpg : A principled noble person with a calm sharp gaze holding a gleaming blade, dignified, cool steel tones, loyal aura.
+metal-3.jpg : A sword being forged in a glowing hot forge, a hammer striking, sparks flying, intense, orange sparks against cold steel.
+metal-4.jpg : A beautifully forged shining sword held upright protecting the weak, radiant and elegant, silver light with a subtle glow.
+
+■ 수(水) — "흐르는 강"  (파란 톤)
+water-1.jpg : A small quiet spring welling up in a misty mountain valley, a gentle trickle of clear water, serene, soft blue tones.
+water-2.jpg : A wise gentle person reflected in calm water, flowing translucent water forming around them, deep and insightful, blue glow.
+water-3.jpg : Formless water scattering and drifting in many directions in darkness, lost in mist, melancholic deep blue.
+water-4.jpg : A vast majestic river flowing through nourished green land toward a glowing sea on the horizon, expansive, hopeful blue-gold.
+────────────────────────────────────────
+
+[저작권 주의]
+- AI로 만든 그림은 해당 서비스의 "상업적 이용 가능" 플랜/약관을 꼭 확인하세요.
+- 다른 앱/작가의 그림을 그대로 쓰지 마세요. 위 프롬프트는 우리만의 오리지널 장면입니다.
+
+도움이 필요하면 "스토리 그림 넣어줘"라고 말씀해 주세요.

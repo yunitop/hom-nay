@@ -254,6 +254,27 @@
   .g-fortune{background:linear-gradient(160deg,#3a4ed6,#161038);}
   .g-adult{background:linear-gradient(160deg,#b3315a,#3a1020);}
   .g-saju{background:linear-gradient(160deg,#1f9e8e,#123a4d);}
+  /* 오행 테마 */
+  .g-wood{background:linear-gradient(160deg,#2e9e5b,#123a25);}
+  .g-fire{background:linear-gradient(160deg,#ff5e3a,#5e1414);}
+  .g-earth{background:linear-gradient(160deg,#caa24a,#5a3a1e);}
+  .g-metal{background:linear-gradient(160deg,#9fb3c8,#2a3340);}
+  .g-water{background:linear-gradient(160deg,#3aa6ff,#10204d);}
+
+  /* 사주 스토리 화면 */
+  .story-overlay{display:none;}
+  .story-overlay.active{display:block;}
+  .story-title{font-size:24px;font-weight:900;text-align:center;margin:8px 0 6px;color:var(--primary-soft);}
+  .story-sub{text-align:center;color:var(--muted);font-size:13px;margin:0 0 20px;}
+  .scene{margin-bottom:26px;}
+  .scene-img{position:relative;width:100%;aspect-ratio:4/5;border-radius:18px;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;border:1px solid var(--line);}
+  .scene-emoji{font-size:76px;opacity:.92;filter:drop-shadow(0 6px 16px rgba(0,0,0,.4));}
+  .scene-pic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .scene-no{position:absolute;top:12px;left:14px;z-index:2;background:rgba(0,0,0,.5);color:#fff;
+    font-size:12px;font-weight:700;padding:4px 11px;border-radius:999px;}
+  .scene-text{margin:13px 2px 0;font-size:15.5px;line-height:1.78;color:#e7e3f0;}
+  .scene-cap{margin:18px 0 8px;text-align:center;color:#6c6480;font-size:12px;}
 
   /* 실제 그림 카드: assets/img/ 에 이미지를 넣고 카드에 has-img 추가 + style 배경 지정 */
   .pcard.has-img,.hcard.has-img{background-size:cover;background-position:center;}
@@ -415,6 +436,13 @@
     </div>
   </section>
 
+  <!-- 사주 스토리 -->
+  <section class="row-sec">
+    <p class="sec-kicker" data-t="secStoryK">사주 스토리</p>
+    <h2 class="sec-title" data-t="secStoryT">오행으로 읽는 나의 이야기</h2>
+    <div class="hscroll" id="story-cards"></div>
+  </section>
+
   <!-- 리뷰 -->
   <section class="reviews">
     <h2 class="sec-title" data-t="revT">따끈따끈 고객 후기 🔥</h2>
@@ -549,6 +577,7 @@
       <div class="block"><div class="block-title">💼 <span data-t="sWork">일·재물운</span></div><div class="block-text" id="s-work"></div></div>
       <div class="block"><div class="block-title">💗 <span data-t="sLove">애정·인연운</span></div><div class="block-text" id="s-love"></div></div>
       <div class="block"><div class="block-title">🌿 <span data-t="sAdvice">조언</span></div><div class="block-text" id="s-advice"></div></div>
+      <button class="btn-main" onclick="openStory(sajuDom)" style="margin-top:16px;">📖 <span data-t="sStoryBtn">내 오행 스토리 보기</span></button>
     </div>
   </div>
 
@@ -587,6 +616,17 @@
   </div>
 
   <footer data-t="footer">※ 본 풀이는 재미와 참고용입니다.</footer>
+</div>
+
+<!-- ============ 사주 스토리 화면 ============ -->
+<div class="wrap story-overlay" id="story">
+  <div class="tool-top">
+    <button onclick="closeStory()" aria-label="back">←</button>
+    <span class="tt-title">FATE</span>
+  </div>
+  <h1 class="story-title" id="story-title"></h1>
+  <p class="story-sub" id="story-sub"></p>
+  <div id="story-scenes"></div>
 </div>
 
 <!-- 바로가기 메뉴 (햄버거) -->
@@ -630,6 +670,7 @@ const UI = {
     catAll:"전체", catAdult:"성인", catLove:"연애", catReunion:"재회", catWealth:"재물", catMatch:"궁합",
     navHome:"홈", navToday:"운세", comingSoon:"준비 중인 콘텐츠예요. 곧 만나보실 수 있어요!",
     badgeToday:"오늘", menuInfo:"고객지원", menuContact:"고객센터", menuTerms:"이용약관", menuPrivacy:"개인정보처리방침",
+    secStoryK:"사주 스토리", secStoryT:"오행으로 읽는 나의 이야기", sStoryBtn:"내 오행 스토리 보기", storyCap:"※ 일러스트는 준비 중입니다.",
     heroTodayT:"오늘의 운세", heroTodayD:"생년월일로 보는 오늘 하루",
     heroSajuT:"정통 사주팔자", heroSajuD:"타고난 나의 운명과 오행",
     heroMatchT:"운명의 궁합", heroMatchD:"두 사람의 인연 점수",
@@ -683,6 +724,7 @@ const UI = {
     catAll:"Tất cả", catAdult:"18+", catLove:"Tình duyên", catReunion:"Tái hợp", catWealth:"Tài lộc", catMatch:"Hợp tuổi",
     navHome:"Trang chủ", navToday:"Hôm nay", comingSoon:"Nội dung đang chuẩn bị. Sẽ sớm ra mắt!",
     badgeToday:"HÔM NAY", menuInfo:"Hỗ trợ", menuContact:"Liên hệ (CSKH)", menuTerms:"Điều khoản", menuPrivacy:"Chính sách bảo mật",
+    secStoryK:"Câu chuyện tứ trụ", secStoryT:"Câu chuyện của tôi qua ngũ hành", sStoryBtn:"Xem câu chuyện ngũ hành của tôi", storyCap:"※ Hình minh họa đang được chuẩn bị.",
     heroTodayT:"Tử vi hôm nay", heroTodayD:"Vận hôm nay theo ngày sinh",
     heroSajuT:"Tứ trụ chính thống", heroSajuD:"Mệnh và ngũ hành bẩm sinh",
     heroMatchT:"Hợp tuổi định mệnh", heroMatchD:"Điểm nhân duyên của hai người",
@@ -736,6 +778,7 @@ const UI = {
     catAll:"All", catAdult:"18+", catLove:"Love", catReunion:"Reunion", catWealth:"Wealth", catMatch:"Match",
     navHome:"Home", navToday:"Today", comingSoon:"This content is coming soon. Stay tuned!",
     badgeToday:"TODAY", menuInfo:"Support", menuContact:"Contact us", menuTerms:"Terms", menuPrivacy:"Privacy Policy",
+    secStoryK:"Saju Stories", secStoryT:"Your story through the Five Elements", sStoryBtn:"Read my element story", storyCap:"※ Illustrations are in preparation.",
     heroTodayT:"Today's Fortune", heroTodayD:"Today's luck by your birth date",
     heroSajuT:"Four Pillars (Saju)", heroSajuD:"Your destiny & five elements",
     heroMatchT:"Destined Compatibility", heroMatchD:"The bond score of two people",
@@ -1062,6 +1105,113 @@ const MATCH = {
 };
 
 /* ============================================================
+   사주 스토리 (오행별) — index 0목 1화 2토 3금 4수
+   각 장면 img 는 assets/img/story/<img>.jpg 로 교체 가능
+   ============================================================ */
+const STORY = [
+  { key:"wood", emoji:"🌳",
+    title:{ko:"씨앗에서 숲으로", vi:"Từ hạt mầm đến rừng xanh", en:"From Seed to Forest"},
+    scenes:[
+      {img:"wood-1",
+        ko:"당신은 봄의 첫 숨결과 함께 태어났습니다. 작은 씨앗 하나가 차가운 흙을 뚫고, 빛을 향해 가만히 고개를 들었지요.",
+        vi:"Bạn sinh ra cùng hơi thở đầu tiên của mùa xuân. Một hạt mầm nhỏ xuyên qua lớp đất lạnh, lặng lẽ vươn đầu về phía ánh sáng.",
+        en:"You were born with the first breath of spring. A tiny seed pushed through the cold soil and quietly lifted its head toward the light."},
+      {img:"wood-2",
+        ko:"당신의 마음엔 늘 '위로, 더 위로' 자라려는 힘이 흐릅니다. 정이 많고 앞장서기를 두려워하지 않아, 사람들은 자연스레 당신을 따릅니다.",
+        vi:"Trong lòng bạn luôn chảy một sức mạnh muốn vươn 'lên cao, cao hơn nữa'. Giàu tình cảm và không ngại dẫn đầu, mọi người tự nhiên đi theo bạn.",
+        en:"Within you flows a force that always wants to grow 'up, and higher still.' Warm-hearted and unafraid to lead, people naturally follow you."},
+      {img:"wood-3",
+        ko:"하지만 너무 빨리 자란 가지는 바람에 쉽게 휘청입니다. 조급함을 내려놓는 법을 배울 때, 당신의 뿌리는 비로소 깊어집니다.",
+        vi:"Nhưng cành lớn quá nhanh sẽ dễ lung lay trước gió. Khi học được cách buông bỏ sự nóng vội, rễ của bạn mới thật sự cắm sâu.",
+        en:"But branches that grow too fast sway easily in the wind. Only when you learn to let go of haste do your roots truly deepen."},
+      {img:"wood-4",
+        ko:"마침내 당신은 한 그루 큰 나무가 됩니다. 지친 이들이 당신의 그늘에서 쉬어가고, 당신은 숲이 되어 세상을 푸르게 합니다.",
+        vi:"Cuối cùng bạn trở thành một cây đại thụ. Những người mỏi mệt nghỉ dưới bóng bạn, và bạn hóa thành rừng xanh cho thế gian.",
+        en:"At last you become a great tree. The weary rest in your shade, and you grow into a forest that turns the world green."}
+    ]},
+  { key:"fire", emoji:"🔥",
+    title:{ko:"불꽃의 춤", vi:"Vũ điệu của ngọn lửa", en:"Dance of the Flame"},
+    scenes:[
+      {img:"fire-1",
+        ko:"당신은 한 점 불꽃에서 시작되었습니다. 어둠 속에서 톡, 하고 피어난 빛은 곧 주위를 환히 밝혔습니다.",
+        vi:"Bạn khởi đầu từ một đốm lửa. Trong bóng tối, ánh sáng bừng lên một cái, lập tức soi sáng xung quanh.",
+        en:"You began as a single spark. In the dark it crackled to life and at once lit everything around it."},
+      {img:"fire-2",
+        ko:"당신의 열정은 사람들을 끌어모읍니다. 웃음과 표현이 풍부해, 당신이 있는 자리는 늘 따뜻하고 환합니다.",
+        vi:"Nhiệt huyết của bạn thu hút mọi người. Giàu nụ cười và biểu cảm, nơi có bạn luôn ấm áp và rạng rỡ.",
+        en:"Your passion draws people in. Full of laughter and expression, any place you're in stays warm and bright."},
+      {img:"fire-3",
+        ko:"그러나 너무 활활 타오르면 금세 재가 됩니다. 감정의 물결을 다스릴 때, 당신의 빛은 오래도록 지속됩니다.",
+        vi:"Nhưng cháy quá dữ dội thì chóng thành tro. Khi làm chủ được những con sóng cảm xúc, ánh sáng của bạn sẽ bền lâu.",
+        en:"But burning too fiercely soon turns to ash. When you master the waves of emotion, your light lasts long."},
+      {img:"fire-4",
+        ko:"이제 당신은 흔들리지 않는 등대가 됩니다. 길 잃은 이들이 당신의 빛을 보고 방향을 찾고, 당신은 어둠 속 희망이 됩니다.",
+        vi:"Giờ bạn trở thành ngọn hải đăng không lay chuyển. Người lạc lối nhìn ánh sáng của bạn mà tìm ra hướng đi, bạn là hy vọng giữa bóng tối.",
+        en:"Now you become an unwavering lighthouse. The lost find their way by your light, and you become hope in the dark."}
+    ]},
+  { key:"earth", emoji:"⛰️",
+    title:{ko:"산이 된 사람", vi:"Người hóa thành núi", en:"The One Who Became a Mountain"},
+    scenes:[
+      {img:"earth-1",
+        ko:"당신은 깊고 너른 대지에서 태어났습니다. 서두르지 않는 흙은 모든 씨앗을 말없이 품었습니다.",
+        vi:"Bạn sinh ra từ lòng đất sâu rộng. Đất không vội vàng, lặng lẽ ôm ấp mọi hạt mầm.",
+        en:"You were born from the deep, wide earth. Never rushing, the soil silently embraced every seed."},
+      {img:"earth-2",
+        ko:"당신은 듬직하고 한결같습니다. 사람들은 흔들릴 때마다 당신에게 기대고, 당신의 약속은 곧 신뢰가 됩니다.",
+        vi:"Bạn vững vàng và kiên định. Mỗi khi chao đảo, mọi người tựa vào bạn, và lời hứa của bạn chính là niềm tin.",
+        en:"You are steady and constant. Whenever others waver, they lean on you, and your word becomes trust."},
+      {img:"earth-3",
+        ko:"다만 너무 많은 것을 홀로 짊어지면 당신마저 무너질 수 있습니다. 때로 내려놓는 법을 배울 때, 대지는 더욱 단단해집니다.",
+        vi:"Chỉ là gánh quá nhiều một mình thì ngay cả bạn cũng có thể sụp đổ. Khi học cách buông bớt, mặt đất sẽ thêm vững chắc.",
+        en:"Yet carrying too much alone can break even you. When you learn to set things down, the earth grows firmer."},
+      {img:"earth-4",
+        ko:"마침내 당신은 한 자리를 지키는 산이 됩니다. 비바람이 지나가도 그 자리에 서서, 모두가 우러러보는 든든한 봉우리가 됩니다.",
+        vi:"Cuối cùng bạn trở thành ngọn núi giữ vững một chỗ. Dù mưa gió qua đi vẫn đứng nguyên, thành đỉnh núi vững chãi mọi người ngưỡng vọng.",
+        en:"At last you become a mountain that holds its place. Through wind and rain you stand firm, a steadfast peak all look up to."}
+    ]},
+  { key:"metal", emoji:"⚔️",
+    title:{ko:"벼려진 검", vi:"Thanh kiếm được tôi luyện", en:"The Forged Blade"},
+    scenes:[
+      {img:"metal-1",
+        ko:"당신은 산속 깊은 광맥에서 태어났습니다. 거친 바위 속에 잠든 원석, 그 안엔 빛나는 단단함이 숨어 있었습니다.",
+        vi:"Bạn sinh ra từ mạch quặng sâu trong núi. Viên quặng thô ngủ trong đá, ẩn chứa sự cứng cáp lấp lánh.",
+        en:"You were born from a deep vein of ore in the mountains. A raw stone asleep in rock, hiding a shining hardness within."},
+      {img:"metal-2",
+        ko:"당신은 원칙이 분명하고 결단이 빠릅니다. 한번 한 약속은 끝까지 지키고, 의리로 사람의 마음을 얻습니다.",
+        vi:"Bạn có nguyên tắc rõ ràng và quyết đoán nhanh. Đã hứa là giữ đến cùng, dùng nghĩa khí mà thu phục lòng người.",
+        en:"Your principles are clear and your decisions swift. A promise once made you keep to the end, winning hearts through loyalty."},
+      {img:"metal-3",
+        ko:"하지만 단단함이 지나치면 차갑고 날카로워집니다. 부드러움을 더할 때, 당신의 날은 더욱 빛납니다.",
+        vi:"Nhưng quá cứng rắn thì hóa lạnh lùng và sắc bén. Khi thêm chút mềm mại, lưỡi gươm của bạn càng tỏa sáng.",
+        en:"But hardness in excess turns cold and sharp. When you add gentleness, your blade shines all the brighter."},
+      {img:"metal-4",
+        ko:"수많은 담금질 끝에 당신은 한 자루의 명검이 됩니다. 함부로 휘두르지 않고 약한 이를 지키는, 빛나고 올곧은 검이 됩니다.",
+        vi:"Sau muôn lần tôi luyện, bạn thành một thanh bảo kiếm. Không vung bừa bãi mà bảo vệ kẻ yếu — thanh gươm sáng ngời và ngay thẳng.",
+        en:"After countless temperings you become a fine sword. Never swung carelessly but guarding the weak — a bright and upright blade."}
+    ]},
+  { key:"water", emoji:"🌊",
+    title:{ko:"흐르는 강", vi:"Dòng sông cuộn chảy", en:"The Flowing River"},
+    scenes:[
+      {img:"water-1",
+        ko:"당신은 산골짜기 작은 샘에서 태어났습니다. 조용히 솟아난 물 한 줄기가 낮은 곳을 향해 흐르기 시작했습니다.",
+        vi:"Bạn sinh ra từ con suối nhỏ nơi thung lũng. Một dòng nước lặng lẽ trào lên, bắt đầu chảy về phía thấp.",
+        en:"You were born from a small spring in a mountain valley. A quiet trickle welled up and began to flow toward the low places."},
+      {img:"water-2",
+        ko:"당신은 지혜롭고 유연합니다. 어떤 그릇에도 담기고, 사람의 마음을 깊이 들여다보아 그들의 슬픔까지 어루만집니다.",
+        vi:"Bạn thông tuệ và linh hoạt. Vừa với mọi chiếc bình, nhìn thấu lòng người và xoa dịu cả nỗi buồn của họ.",
+        en:"You are wise and flexible. You take the shape of any vessel, seeing deep into hearts and soothing even their sorrow."},
+      {img:"water-3",
+        ko:"그러나 형체가 없으면 자칫 길을 잃고 떠돕니다. 한 방향을 정해 흐를 때, 당신은 비로소 힘을 얻습니다.",
+        vi:"Nhưng không có hình dạng thì dễ lạc lối mà trôi dạt. Khi chọn một hướng để chảy, bạn mới thật sự có sức mạnh.",
+        en:"But without form you can lose your way and drift. When you choose one direction to flow, you finally gain your power."},
+      {img:"water-4",
+        ko:"마침내 당신은 너른 강이 되어 대지를 적십니다. 메마른 들판을 살리고, 끝내 모든 것을 품는 바다에 다다릅니다.",
+        vi:"Cuối cùng bạn thành dòng sông rộng tưới mát đại địa. Hồi sinh cánh đồng khô cằn, rồi về tới biển cả bao dung tất cả.",
+        en:"At last you become a wide river that nourishes the land. You revive the parched fields and finally reach the sea that embraces all."}
+    ]}
+];
+
+/* ============================================================
    공통 로직
    ============================================================ */
 let lang = "vi";   /* 베트남어 기본 */
@@ -1079,6 +1229,8 @@ function setLang(l){
   if(last.today!==null) renderToday(last.today);
   if(last.saju)  renderSaju(last.saju);
   if(last.match) renderMatch(last.match);
+  if(storyIdx!==null) renderStory(storyIdx);
+  renderStoryCards();
 }
 const last = {today:null, saju:null, match:null};
 
@@ -1127,11 +1279,56 @@ function closeMenu(){ document.getElementById("menu").classList.remove("open"); 
 function menuGo(tab){ closeMenu(); openTool(tab); }
 function menuHome(){ closeMenu(); closeTool(); }
 
+/* ===== 사주 스토리 ===== */
+let storyIdx = null;
+let sajuDom = 0;
+function renderStory(idx){
+  const s = STORY[idx];
+  document.getElementById("story-title").textContent = s.title[lang];
+  document.getElementById("story-sub").textContent = ELEM[lang][idx];
+  document.getElementById("story-scenes").innerHTML = s.scenes.map((sc,i)=>
+    `<div class="scene">
+       <div class="scene-img g-${s.key}">
+         <span class="scene-no">${i+1} / ${s.scenes.length}</span>
+         <span class="scene-emoji">${s.emoji}</span>
+         <img class="scene-pic" src="assets/img/story/${sc.img}.jpg" alt="" onerror="this.remove()">
+       </div>
+       <p class="scene-text">${sc[lang]}</p>
+     </div>`).join("") +
+    `<p class="scene-cap">${UI[lang].storyCap}</p>`;
+}
+function openStory(idx){
+  storyIdx = idx;
+  document.getElementById("feed").classList.add("hidden");
+  document.getElementById("cats").classList.add("hidden");
+  document.getElementById("tool").classList.remove("active");
+  document.getElementById("story").classList.add("active");
+  renderStory(idx);
+  window.scrollTo({top:0});
+}
+function closeStory(){
+  storyIdx = null;
+  document.getElementById("story").classList.remove("active");
+  document.getElementById("cats").classList.remove("hidden");
+  document.getElementById("feed").classList.remove("hidden");
+  setNav("home");
+  window.scrollTo({top:0});
+}
+function renderStoryCards(){
+  const el = document.getElementById("story-cards");
+  if(!el) return;
+  el.innerHTML = STORY.map((s,i)=>
+    `<div class="pcard scard g-${s.key}" onclick="openStory(${i})">
+       <div class="motif">${s.emoji}</div>
+       <h4>${s.title[lang]}</h4><span>${ELEM[lang][i]}</span>
+     </div>`).join("");
+}
+
 /* ===== 카테고리 필터 ===== */
 function filterCat(btn){
   const c = btn.dataset.cat;
   document.querySelectorAll(".cat").forEach(b=>b.classList.toggle("active", b===btn));
-  document.querySelectorAll("#feed .pcard").forEach(card=>{
+  document.querySelectorAll("#feed .pcard:not(.scard)").forEach(card=>{
     card.style.display = (c==="all" || card.dataset.cat===c) ? "" : "none";
   });
   // 보이는 카드가 없는 주제 섹션은 숨김
@@ -1361,6 +1558,7 @@ function renderSaju(o){
   [p.ys,p.ms,p.ds].concat(p.hs!==null?[p.hs]:[]).forEach(s=>cnt[STEM_ELEM[s]]++);
   [p.yb,p.mb,p.db].concat(p.hb!==null?[p.hb]:[]).forEach(b=>cnt[BRANCH_ELEM[b]]++);
   let dom=0; for(let i=1;i<5;i++) if(cnt[i]>cnt[dom]) dom=i;
+  sajuDom=dom;
 
   document.getElementById("s-elem").textContent =
     (lang==="ko"?"강한 기운: ":lang==="vi"?"Khí vượng: ":"Strong element: ")+ELEM[lang][dom];
