@@ -14,10 +14,6 @@
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icon.svg" />
 <link rel="icon" href="icon.svg" type="image/svg+xml" />
-<!-- 명조체(세리프) 제목용 오픈소스 폰트 -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&display=swap" rel="stylesheet" />
 <style>
   :root{
     --bg:#0b0a10;
@@ -25,7 +21,6 @@
     --primary:#ff1f66;        /* 도화 핑크 포인트 */
     --primary-soft:#ff6b8b;   /* 도화 코랄 */
     --gold:#ffc83d;           /* 도화 골드(따뜻한 강조) */
-    --font-head:"Nanum Myeongjo",ui-serif,Georgia,serif;   /* 명조체 제목 */
     --text:#f4f1f8;
     --muted:#9b93ad;
     --card:#17131f;
@@ -180,11 +175,6 @@
     max-width:440px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px 8px;}
   .appbar .brand{font-size:23px;font-weight:900;letter-spacing:.5px;
     background:linear-gradient(90deg,#ff1f66,#ff6b8b);-webkit-background-clip:text;background-clip:text;color:transparent;}
-
-  /* 명조체 제목 */
-  h1,.sec-title,.hcard h3,.pcard h4,.res-name,.rank-item .rt h4,.tt-title{font-family:var(--font-head);}
-  .sec-title{font-weight:800;}
-  .hcard h3{font-weight:800;}
   .appbar-right{display:flex;align-items:center;gap:8px;}
 
   .cats{display:flex;gap:16px;overflow-x:auto;max-width:440px;margin:0 auto;padding:4px 16px 12px;scrollbar-width:none;}
