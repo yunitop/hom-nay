@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="vi">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
@@ -48,7 +48,27 @@
   .brand{font-size:24px;font-weight:900;letter-spacing:.5px;
     background:linear-gradient(90deg,var(--primary),var(--primary-soft));
     -webkit-background-clip:text;background-clip:text;color:transparent;}
-  .lang-bar{display:flex;gap:6px;}
+  .lang-bar{display:none;}  /* 베트남어 고정: 언어 전환 숨김 */
+  .hamb{background:none;border:none;color:var(--text);font-size:24px;line-height:1;cursor:pointer;padding:4px 2px;}
+
+  /* 바로가기 메뉴(햄버거) */
+  .menu-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;opacity:0;pointer-events:none;transition:opacity .2s;}
+  .menu-backdrop.open{opacity:1;pointer-events:auto;}
+  .menu{position:fixed;top:0;right:0;height:100%;width:82%;max-width:320px;z-index:51;
+    background:#14101c;border-left:1px solid var(--line);box-shadow:-12px 0 40px rgba(0,0,0,.5);
+    transform:translateX(100%);transition:transform .25s ease;overflow-y:auto;
+    padding:calc(16px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));}
+  .menu.open{transform:none;}
+  .menu-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .menu-head .mh-brand{font-weight:900;font-size:21px;letter-spacing:.5px;
+    background:linear-gradient(90deg,#ff1f66,#ff6b8b);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .menu-head button{background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;line-height:1;}
+  .menu .m-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;text-decoration:none;
+    background:none;border:none;color:var(--text);font-size:16px;font-weight:700;padding:15px 6px;
+    border-bottom:1px solid var(--line);cursor:pointer;}
+  .menu .m-ic{font-size:20px;width:24px;text-align:center;}
+  .menu .m-sub{margin:16px 6px 4px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.5px;}
+  .menu .m-link{color:var(--muted);font-size:14px;font-weight:600;padding:12px 6px;}
   .lang-btn{
     background:rgba(255,255,255,0.05);border:1px solid var(--line);color:var(--muted);
     padding:6px 12px;border-radius:999px;cursor:pointer;font-size:12px;font-weight:700;transition:all .15s;
@@ -273,10 +293,13 @@
   <header class="appbar">
     <div class="brand">FATE</div>
     <div class="appbar-right">
+      <!-- 언어 전환(베트남어 고정): 숨김 -->
       <div class="lang-bar">
-        <button class="lang-btn active" data-lang="ko" onclick="setLang('ko')">한국어</button>
-        <button class="lang-btn" data-lang="vi" onclick="setLang('vi')">Tiếng Việt</button>
+        <button class="lang-btn" data-lang="ko" onclick="setLang('ko')">한국어</button>
+        <button class="lang-btn active" data-lang="vi" onclick="setLang('vi')">Tiếng Việt</button>
       </div>
+      <!-- 바로가기 햄버거 -->
+      <button class="hamb" onclick="openMenu()" aria-label="menu">☰</button>
     </div>
   </header>
   <nav class="cats" id="cats">
@@ -295,7 +318,7 @@
   <!-- 히어로 (우리 핵심 기능) -->
   <section class="hero">
     <div class="hcard g-fortune" onclick="openTool('today')">
-      <span class="badge">TODAY</span><div class="motif">🌙</div>
+      <span class="badge" data-t="badgeToday">HÔM NAY</span><div class="motif">🌙</div>
       <h3 data-t="heroTodayT">오늘의 운세</h3><p data-t="heroTodayD">생년월일로 보는 오늘 하루</p>
     </div>
     <div class="hcard g-saju" onclick="openTool('saju')">
@@ -553,6 +576,23 @@
   <footer data-t="footer">※ 본 풀이는 재미와 참고용입니다.</footer>
 </div>
 
+<!-- 바로가기 메뉴 (햄버거) -->
+<div class="menu-backdrop" id="menu-bd" onclick="closeMenu()"></div>
+<nav class="menu" id="menu">
+  <div class="menu-head">
+    <span class="mh-brand">FATE</span>
+    <button onclick="closeMenu()" aria-label="close">✕</button>
+  </div>
+  <button class="m-item" onclick="menuHome()"><span class="m-ic">🏠</span><span data-t="navHome">홈</span></button>
+  <button class="m-item" onclick="menuGo('today')"><span class="m-ic">🌙</span><span data-t="tabToday">오늘의 운세</span></button>
+  <button class="m-item" onclick="menuGo('saju')"><span class="m-ic">📜</span><span data-t="tabSaju">사주</span></button>
+  <button class="m-item" onclick="menuGo('match')"><span class="m-ic">💞</span><span data-t="tabMatch">궁합</span></button>
+  <p class="m-sub" data-t="menuInfo">고객지원</p>
+  <a class="m-item m-link" href="#" data-t="menuContact">고객센터</a>
+  <a class="m-item m-link" href="#" data-t="menuTerms">이용약관</a>
+  <a class="m-item m-link" href="#" data-t="menuPrivacy">개인정보처리방침</a>
+</nav>
+
 <!-- 하단 플로팅 네비게이션 -->
 <nav class="bottomnav">
   <button class="nav-item active" data-nav="home" onclick="closeTool()">
@@ -576,6 +616,7 @@ const UI = {
     subToday:"생년월일로 보는 오늘 하루", subSaju:"사주팔자와 오행 분석", subMatch:"두 사람의 띠 궁합",
     catAll:"전체", catAdult:"성인", catLove:"연애", catReunion:"재회", catWealth:"재물", catMatch:"궁합",
     navHome:"홈", navToday:"운세", comingSoon:"준비 중인 콘텐츠예요. 곧 만나보실 수 있어요!",
+    badgeToday:"오늘", menuInfo:"고객지원", menuContact:"고객센터", menuTerms:"이용약관", menuPrivacy:"개인정보처리방침",
     heroTodayT:"오늘의 운세", heroTodayD:"생년월일로 보는 오늘 하루",
     heroSajuT:"정통 사주팔자", heroSajuD:"타고난 나의 운명과 오행",
     heroMatchT:"운명의 궁합", heroMatchD:"두 사람의 인연 점수",
@@ -628,6 +669,7 @@ const UI = {
     subToday:"Vận hôm nay theo ngày sinh", subSaju:"Tứ trụ & phân tích ngũ hành", subMatch:"Hợp tuổi hai người",
     catAll:"Tất cả", catAdult:"18+", catLove:"Tình duyên", catReunion:"Tái hợp", catWealth:"Tài lộc", catMatch:"Hợp tuổi",
     navHome:"Trang chủ", navToday:"Hôm nay", comingSoon:"Nội dung đang chuẩn bị. Sẽ sớm ra mắt!",
+    badgeToday:"HÔM NAY", menuInfo:"Hỗ trợ", menuContact:"Liên hệ (CSKH)", menuTerms:"Điều khoản", menuPrivacy:"Chính sách bảo mật",
     heroTodayT:"Tử vi hôm nay", heroTodayD:"Vận hôm nay theo ngày sinh",
     heroSajuT:"Tứ trụ chính thống", heroSajuD:"Mệnh và ngũ hành bẩm sinh",
     heroMatchT:"Hợp tuổi định mệnh", heroMatchD:"Điểm nhân duyên của hai người",
@@ -884,7 +926,7 @@ const MATCH = {
 /* ============================================================
    공통 로직
    ============================================================ */
-let lang = "ko";
+let lang = "vi";   /* 베트남어 기본 */
 
 function setLang(l){
   lang = l;
@@ -939,6 +981,12 @@ function closeTool(){
   window.scrollTo({top:0});
 }
 function comingSoon(){ alert(UI[lang].comingSoon); }
+
+/* ===== 바로가기 메뉴(햄버거) ===== */
+function openMenu(){ document.getElementById("menu").classList.add("open"); document.getElementById("menu-bd").classList.add("open"); }
+function closeMenu(){ document.getElementById("menu").classList.remove("open"); document.getElementById("menu-bd").classList.remove("open"); }
+function menuGo(tab){ closeMenu(); openTool(tab); }
+function menuHome(){ closeMenu(); closeTool(); }
 
 /* ===== 카테고리 필터 ===== */
 function filterCat(btn){
@@ -1250,6 +1298,9 @@ function renderMatch(o){
   document.getElementById("m-advice").textContent=MATCH.advice[lang][rel];
   reveal("m-result");
 }
+
+/* 페이지 로드 시 베트남어로 표시 */
+setLang("vi");
 </script>
 </body>
 </html>
