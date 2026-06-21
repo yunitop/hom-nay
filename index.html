@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
-<title>FATEBRIDGE · 운세 사주 궁합 | Tử Vi · Tứ Trụ · Hợp Tuổi</title>
+<title>FATE · 운세 사주 궁합 | Tử Vi · Tứ Trụ · Hợp Tuổi</title>
 <meta name="description" content="AI 분석 오늘의 운세, 사주, 궁합 · Xem tử vi, tứ trụ, hợp tuổi" />
 <!-- 모바일 웹앱 (홈 화면에 추가) -->
 <meta name="theme-color" content="#0b0a10" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-mobile-web-app-title" content="FATEBRIDGE" />
+<meta name="apple-mobile-web-app-title" content="FATE" />
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icon.svg" />
 <link rel="icon" href="icon.svg" type="image/svg+xml" />
@@ -40,7 +40,7 @@
     -webkit-tap-highlight-color:transparent;
     overflow-x:hidden;overscroll-behavior-y:none;
   }
-  .wrap{max-width:520px;margin:0 auto;padding:0 16px calc(120px + env(safe-area-inset-bottom));}
+  .wrap{max-width:440px;margin:0 auto;padding:0 16px calc(120px + env(safe-area-inset-bottom));}
 
   /* 상단 바 (브랜드 + 언어) */
   .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
@@ -152,7 +152,7 @@
     display:flex;gap:4px;padding:7px;border-radius:999px;
     background:rgba(28,22,38,0.82);backdrop-filter:blur(14px);
     border:1px solid var(--line);box-shadow:0 12px 36px rgba(0,0,0,0.5);
-    width:calc(100% - 32px);max-width:420px;}
+    width:calc(100% - 32px);max-width:440px;}
   .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
     border:none;background:transparent;color:var(--muted);cursor:pointer;
     padding:9px 4px;border-radius:999px;font-size:11px;font-weight:700;transition:all .15s;}
@@ -172,12 +172,12 @@
   /* ===== 상단 고정(브랜드+카테고리) ===== */
   .topwrap{position:sticky;top:0;z-index:40;background:#0c0a11;}
   .appbar{display:flex;align-items:center;justify-content:space-between;
-    padding:calc(14px + env(safe-area-inset-top)) 16px 8px;}
+    max-width:440px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px 8px;}
   .appbar .brand{font-size:23px;font-weight:900;letter-spacing:.5px;
     background:linear-gradient(90deg,#ff2e74,#ff6aa0);-webkit-background-clip:text;background-clip:text;color:transparent;}
   .appbar-right{display:flex;align-items:center;gap:8px;}
 
-  .cats{display:flex;gap:16px;overflow-x:auto;padding:4px 16px 12px;scrollbar-width:none;}
+  .cats{display:flex;gap:16px;overflow-x:auto;max-width:440px;margin:0 auto;padding:4px 16px 12px;scrollbar-width:none;}
   .cats::-webkit-scrollbar{display:none;}
   .cats.hidden{display:none;}
   .cat{flex:0 0 auto;background:none;border:none;color:var(--muted);font-size:16px;font-weight:700;
@@ -190,7 +190,7 @@
   .cat[data-cat="all"].active::after{display:none;}
 
   /* ===== 피드 ===== */
-  .feed{max-width:560px;margin:0 auto;padding:6px 16px calc(120px + env(safe-area-inset-bottom));}
+  .feed{max-width:440px;margin:0 auto;padding:6px 16px calc(120px + env(safe-area-inset-bottom));}
   .feed.hidden{display:none;}
 
   /* 히어로 캐러셀 */
@@ -271,7 +271,7 @@
 <!-- ===== 상단 고정: 브랜드 + 카테고리 ===== -->
 <div class="topwrap">
   <header class="appbar">
-    <div class="brand">FATEBRIDGE</div>
+    <div class="brand">FATE</div>
     <div class="appbar-right">
       <div class="lang-bar">
         <button class="lang-btn active" data-lang="ko" onclick="setLang('ko')">한국어</button>
@@ -424,7 +424,7 @@
 <div class="wrap tool-overlay" id="tool">
   <div class="tool-top">
     <button onclick="closeTool()" aria-label="back">←</button>
-    <span class="tt-title">FATEBRIDGE</span>
+    <span class="tt-title">FATE</span>
   </div>
 
   <!-- 현재 화면 제목 (탭에 따라 자동 변경) -->
