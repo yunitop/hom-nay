@@ -14,13 +14,18 @@
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icon.svg" />
 <link rel="icon" href="icon.svg" type="image/svg+xml" />
+<!-- 명조체(세리프) 제목용 오픈소스 폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Nanum+Myeongjo:wght@700;800&display=swap" rel="stylesheet" />
 <style>
   :root{
     --bg:#0b0a10;
     --bg2:#141019;
-    --primary:#ff2e74;        /* 핫핑크 포인트 */
-    --primary-soft:#ff6aa0;
-    --gold:#ffcf5c;           /* 따뜻한 강조색 */
+    --primary:#ff1f66;        /* 도화 핑크 포인트 */
+    --primary-soft:#ff6b8b;   /* 도화 코랄 */
+    --gold:#ffc83d;           /* 도화 골드(따뜻한 강조) */
+    --font-head:"Nanum Myeongjo",ui-serif,Georgia,serif;   /* 명조체 제목 */
     --text:#f4f1f8;
     --muted:#9b93ad;
     --card:#17131f;
@@ -34,7 +39,7 @@
     font-family:"Segoe UI","Malgun Gothic",-apple-system,sans-serif;
     color:var(--text);
     background:
-      radial-gradient(1200px 500px at 50% -10%, rgba(255,46,116,0.18), transparent 60%),
+      radial-gradient(1200px 500px at 50% -10%, rgba(255,31,102,0.18), transparent 60%),
       linear-gradient(180deg,#100b16,#0b0a10 70%) fixed;
     min-height:100vh;min-height:100dvh;line-height:1.65;
     -webkit-tap-highlight-color:transparent;
@@ -75,7 +80,7 @@
   .btn-main{width:100%;margin-top:18px;padding:16px;border:none;border-radius:14px;
     background:linear-gradient(90deg,var(--primary),var(--primary-soft));
     color:#fff;font-size:17px;font-weight:800;cursor:pointer;transition:transform .1s;
-    box-shadow:0 8px 24px rgba(255,46,116,0.35);}
+    box-shadow:0 8px 24px rgba(255,31,102,0.35);}
   .btn-main:active{transform:scale(.985);}
 
   .panel{display:none;}
@@ -112,7 +117,7 @@
   .pill .k{font-size:11px;color:var(--muted);display:block;}
   .pill .v{font-size:17px;font-weight:800;color:var(--primary-soft);}
 
-  .ai-tag{display:inline-block;background:rgba(255,46,116,0.14);color:var(--primary-soft);font-size:11px;font-weight:700;
+  .ai-tag{display:inline-block;background:rgba(255,31,102,0.14);color:var(--primary-soft);font-size:11px;font-weight:700;
     padding:4px 11px;border-radius:999px;margin-bottom:10px;}
 
   /* 양력/음력 토글 */
@@ -158,7 +163,7 @@
     padding:9px 4px;border-radius:999px;font-size:11px;font-weight:700;transition:all .15s;}
   .nav-item .ni-ic{font-size:19px;line-height:1;}
   .nav-item.active{background:linear-gradient(90deg,var(--primary),var(--primary-soft));color:#fff;
-    box-shadow:0 6px 18px rgba(255,46,116,0.4);}
+    box-shadow:0 6px 18px rgba(255,31,102,0.4);}
 
   /* 작은 화면 미세 조정 */
   @media (max-width:380px){
@@ -173,8 +178,13 @@
   .topwrap{position:sticky;top:0;z-index:40;background:#0c0a11;}
   .appbar{display:flex;align-items:center;justify-content:space-between;
     max-width:440px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) 16px 8px;}
-  .appbar .brand{font-size:23px;font-weight:900;letter-spacing:.5px;
-    background:linear-gradient(90deg,#ff2e74,#ff6aa0);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .appbar .brand{font-family:"Cormorant Garamond",serif;font-size:30px;font-weight:700;letter-spacing:2px;
+    background:linear-gradient(90deg,#ff1f66,#ff6b8b);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+  /* 명조체 제목 */
+  h1,.sec-title,.hcard h3,.pcard h4,.res-name,.rank-item .rt h4,.tt-title{font-family:var(--font-head);}
+  .sec-title{font-weight:800;}
+  .hcard h3{font-weight:800;}
   .appbar-right{display:flex;align-items:center;gap:8px;}
 
   .cats{display:flex;gap:16px;overflow-x:auto;max-width:440px;margin:0 auto;padding:4px 16px 12px;scrollbar-width:none;}
